@@ -1,105 +1,107 @@
 import _ from 'lodash'
 import Hoek from 'hoek'
 import Joi from 'joi'
-
 import Helpers from '../../helpers'
 import Users from '../../models/users'
-// import AwsServices from '../../services/aws_service'
-// const awsServices = new AwsServices()
-/*
- * Api to create new user
- **/
-let defaults = {}
-
+/** 
+Api to create new user
+**/
+var defaults = {};
 const handler = async (request, reply) => {
-  // const email = _.get(request, 'payload.email', '')
-  try {
-    let payload = request.payload
-    console.log(payload, 'payload======>')
-    // const user = await Users.findOne({
-    //   email
-    // })
-    // if (!user) {
-    //   let payload = request.payload
-    //   // if (_.get(payload, 'image', '') !== '' && await Helpers.checkBase64(payload.image)) {
-    //   //   let originalBlobArray = payload.image.split(',')
-    //   //   var buf = new Buffer(originalBlobArray[1], 'base64')
-    //   //   const imageUrl = await awsServices.uploadImage(payload.imageName, buf, 'user')
-    //   //   delete payload.image
-    //   //   payload.image = imageUrl
-    //   // }
-    //   const newUser = await new Users(payload)
-    //   await newUser.save()
-    //   const token = await Helpers.createJwt(newUser)
-    //   if (_.get(newUser, 'usertype', '') === 'user') {
-    //     return reply({
-    //       status: true,
-    //       message: 'User created successfully',
-    //       data: token
-    //     })
-    //   } else {
-    //     _.get(newUser, 'buildings', []).map(async (buildingId) => {
-    //       await Buildings.findOneAndUpdate({
-    //         _id: buildingId
-    //       }, {
-    //         $addToSet: {
-    //           managerId: _.get(newUser, '_id', '')
-    //         }
-    //       })
-    //     })
-    //     return reply({
-    //       status: true,
-    //       message: 'User Created Successfully',
-    //       data: token
-    //     })
-    //   }
-    // } else {
-    //   return reply({
-    //     status: false,
-    //     message: 'User already exists.',
-    //     data: {}
-    //   })
-    // }
-    return reply({
-      status: true,
-      message: 'User',
-      data: payload
-    })
-  } catch (error) {
-    return reply({
-      status: false,
-      message: error.message,
-      data: {}
-    })
-  }
+    const email = _.get(request, 'payload.email', '')
+    try {
+        let payload = request.payload
+        const user = await Users.findOne({
+            email
+        })
+
+        if (!user) {
+            const user_name = _.get(request, "payload.userName", '');
+            const userName = await Users.findOne({
+                user_name
+            })
+            if (!userName) {
+                let payload = request.payload;
+                var password = payload.password;
+                var saltPass = Helpers.hashPassword(password);
+                payload.salt = saltPass.salt;
+                payload.password = saltPass.hash;
+                const newUser = await new Users(payload)
+                await newUser.save().then(async function(argument) {
+                    if (argument) {
+                        const token = await Helpers.createJwt(newUser);
+                        var user_id = newUser._id;
+                        await Users.findOneAndUpdate({
+                            _id: user_id
+                        }, {
+                            $set: {
+                                token: token
+                            }
+                        }, {
+                            new: true
+                        });
+                        return reply({
+                            status: true,
+                            message: 'User Created Successfully',
+                            data: token
+                        })
+                    }
+                })
+            } else {
+                return reply({
+                    status: false,
+                    message: "User_name already exists."
+                })
+            }
+        } else {
+            return reply({
+                status: false,
+                message: 'Email already exists.',
+            })
+        }
+    } catch (error) {
+        return reply({
+            status: false,
+            message: error.message,
+            // data: {}
+        })
+    }
 }
 
 const routeConfig = {
-  method: 'POST',
-  path: '/user',
-  config: {
-    tags: ['api', 'users'],
-    description: 'Create rentcity Account.',
-    notes: ['On success'],
-    // validate: {
-    //   payload: {
-    //     firstname: Joi.string().required(),
-    //     lastname: Joi.any().optional(),
-    //     email: Joi.string().required(),
-    //     phone: Joi.any().optional(),
-    //     username: Joi.any().optional(),
-    //     image: Joi.any().optional(),
-    //     imageName: Joi.any().optional(),
-    //     usertype: Joi.string().required(),
-    //     company: Joi.string().optional(),
-    //     buildings: Joi.any().optional()
-    //   }
-    // },
-    handler
-  }
+    method: 'POST',
+    path: '/register',
+    config: {
+        tags: ['api', 'users'],
+        description: 'Create FlyFriends Account.',
+        notes: ['On success'],
+        validate: {
+            payload: {
+                userName: Joi.string().required(),
+                lastName: Joi.string().required(),
+                email: Joi.string().required(),
+                password: Joi.string().required(),
+                countryCode: Joi.string().required(),
+                mobileNo: Joi.string().required(),
+                deviceToken: Joi.string().optional(),
+                deviceId: Joi.string().optional(),
+                deviceType: Joi.string().optional(),
+                dob: Joi.string().optional(),
+                address: Joi.string().optional(),
+                lat: Joi.string().optional(),
+                long: Joi.string().optional(),
+                userImage: Joi.string().optional(),
+                city: Joi.string().optional(),
+                state: Joi.string().optional(),
+                token: Joi.string().optional(),
+                country: Joi.string().optional()
+            }
+        },
+        handler
+    }
 }
 
 export default (server, opts) => {
-  defaults = Hoek.applyToDefaults(defaults, opts)
-  server.route(routeConfig)
+    defaults = Hoek.applyToDefaults(defaults, opts)
+    server.route(routeConfig)
 }
