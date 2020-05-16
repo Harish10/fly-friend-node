@@ -1,6 +1,6 @@
 import createUser from './handlers/post_user'
 import loginUser from './handlers/sign_in'
-// import getUsers from './handlers/get_users'
+import getUsers from './handlers/get_users'
 // import getCounts from './handlers/get_counts'
 // import getMe from './handlers/get_me'
 // import updateUser from './handlers/put_user'
@@ -11,7 +11,7 @@ import loginUser from './handlers/sign_in'
 exports.register = (server, options, next) => {
     createUser(server, options);
     loginUser(server, options);
-    // getUsers(server, options)
+    getUsers(server, options)
     // getMe(server, options)
     // getCounts(server, options)
     // updateUser(server, options)

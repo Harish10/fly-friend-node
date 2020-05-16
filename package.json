@@ -29,6 +29,7 @@
     "csv-writer": "^1.5.0",
     "csvtojson": "^2.0.10",
     "dotenv": "^7.0.0",
+    "fs": "0.0.1-security",
     "glue": "4.1.0",
     "good": "^7.3.0",
     "good-console": "^6.4.1",
