@@ -4,7 +4,7 @@ const Schema = Mongoose.Schema;
 var CommentPostSchema = new Schema({
     isLike: {
         type: String,
-        max: 20
+        default:""
     },
     // user_id:{type:String,max:255},
     // post_id:{type:String,max:255},

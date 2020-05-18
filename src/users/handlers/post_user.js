@@ -16,18 +16,21 @@ const handler = async (request, reply) => {
         })
 
         if (!user) {
-            const user_name = _.get(request, "payload.userName", '');
+            const user_name = _.get(request, "payload.userName", payload.firstName);
             const userName = await Users.findOne({
-                user_name
+                userName:user_name
             })
             if (!userName) {
                 let payload = request.payload;
+                const user_name = _.get(request, "payload.userName", payload.firstName);
+                console.log(user_name);
+                payload.userName=user_name;
                 var password = payload.password;
                 var saltPass = Helpers.hashPassword(password);
                 payload.salt = saltPass.salt;
                 payload.password = saltPass.hash;
                 const newUser = await new Users(payload)
-                await newUser.save().then(async function(argument) {
+                const argument= await newUser.save();
                     if (argument) {
                         const token = await Helpers.createJwt(newUser);
                         var user_id = newUser._id;
@@ -37,7 +40,7 @@ const handler = async (request, reply) => {
                             $set: {
                                 token: token
                             }
-                        }, {
+                        },{
                             new: true
                         });
                         return reply({
@@ -46,7 +49,6 @@ const handler = async (request, reply) => {
                             data: token
                         })
                     }
-                })
             } else {
                 return reply({
                     status: false,
@@ -62,8 +64,7 @@ const handler = async (request, reply) => {
     } catch (error) {
         return reply({
             status: false,
-            message: error.message,
-            // data: {}
+            message: error.message
         })
     }
 }
@@ -77,15 +78,13 @@ const routeConfig = {
         notes: ['On success'],
         validate: {
             payload: {
-                userName: Joi.string().required(),
+                userName: Joi.string().optional(),
+                firstName: Joi.string().required(),
                 lastName: Joi.string().required(),
                 email: Joi.string().required(),
                 password: Joi.string().required(),
                 countryCode: Joi.string().required(),
                 mobileNo: Joi.string().required(),
-                deviceToken: Joi.string().optional(),
-                deviceId: Joi.string().optional(),
-                deviceType: Joi.string().optional(),
                 dob: Joi.string().optional(),
                 address: Joi.string().optional(),
                 lat: Joi.string().optional(),

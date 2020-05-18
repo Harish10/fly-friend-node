@@ -5,6 +5,7 @@ import Helpers from '../../helpers'
 import Posts from '../../models/posts'
 import Users from '../../models/users'
 import LikePost from '../../models/likePost'
+
 /** 
 Api to like on post
 **/
@@ -32,7 +33,6 @@ const handler = async (request, reply) => {
                 message: "Token is invalid."
             })
         }
-
         // const userId=_.get(request,'payload.userId','');
         const postId = _.get(request, 'payload.userId', '');
         var where = {
@@ -46,7 +46,7 @@ const handler = async (request, reply) => {
                 postId: postId
             }]
         });
-        console.log(likeData)
+        console.log(likeData);
         if (likeData) {
             console.log(likeData);
             if (likeData.isLike == 1) {
@@ -56,25 +56,26 @@ const handler = async (request, reply) => {
                 }
                 // console.log("if"+likeData[0].isLike);
                 var likeObj = new LikePost(upload_data);
-                await LikePost.findOneAndUpdate(where, upload_data).exec(function(error, data) {
+                var data=await LikePost.findOneAndUpdate(where, upload_data)
+                if(data){
                     return reply({
                         status: true,
                         message: "Unlike the post successfully."
                     })
-                })
+                }
             } else {
                 payload.isLike = 1;
                 var upload_data = {
                     isLike: payload.isLike
                 }
-                // console.log("else"+likeData[0].isLike);
                 var likeObj = new LikePost(upload_data);
-                await LikePost.findOneAndUpdate(where, upload_data).exec(function(data) {
+                var data=await LikePost.findOneAndUpdate(where, upload_data)
+                if(data){
                     return reply({
                         status: true,
                         message: "Like the post successfully."
                     });
-                })
+                }
             }
         } else {
             const user = await Users.findOne({
@@ -90,29 +91,19 @@ const handler = async (request, reply) => {
                 isLike: payload.isLike
             }
             var likeObj = new LikePost(upload_data);
-            likeObj.save(async function(error, data) {
-                if (error) {
-                    return reply({
-                        status: false,
-                        message: error
-                    });
-                } else {
-                    post.likes.push(likeObj._id);
-                    await post.save(function(err, data) {
-                        if (!err) {
+            var data=likeObj.save(); 
+                if (data) {
+               post.likes.push(likeObj._id);
+                    var data=await post.save();
+                        if (data) {
                             return reply({
                                 status: "true",
                                 message: "Like the post successfully."
                             })
-                        }
-                    })
-                }
-            });
         };
-
-
-
-    } catch (error) {
+    }
+    } 
+}catch (error) {
         return reply({
             status: false,
             message: error.message

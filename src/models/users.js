@@ -5,13 +5,15 @@ const Schema = Mongoose.Schema;
 const UserSchema = new Schema({
     userName: {
         type: String,
-        required: true,
-        max: 255
+        default:''
+    },
+    firstName:{
+        type:String,
+        default:''
     },
     lastName: {
         type: String,
-        required: true,
-        max: 255
+        default:''
     },
     email: {
         type: String,
@@ -25,78 +27,63 @@ const UserSchema = new Schema({
         required: false,
     },
     password: {
-        type: Schema.Types.Mixed,
-        required: true,
-        max: 255
+        type: String,
+        default:''
     },
     salt: {
         type: String,
-        required: true,
-        max: 255
+        default:''
     },
     countryCode: {
         type: String,
-        required: true,
-        max: 255
+        default:''
     },
     mobileNo: {
         type: String,
-        max: 255
+        default:''
     },
     dob: {
         type: String,
-        max: 255,
         default: ""
     },
     address: {
         type: String,
-        required: false,
-        max: 255,
         default: ""
     },
     lat: {
         type: String,
-        max: 255,
         default: ""
     },
     long: {
         type: String,
-        max: 255,
         default: ""
     },
     userImage: {
         type: String,
-        max: 255,
         default: ""
     },
     city: {
         type: String,
-        max: 255,
         default: ""
     },
     state: {
         type: String,
-        max: 255,
         default: ""
     },
     country: {
         type: String,
-        max: 255,
         default: ""
     },
     deviceToken: {
         type: String,
-        max: 255,
         default: ""
     },
     deviceId: {
         type: String,
-        max: 255,
         default: ""
     },
     deviceType: {
         type: String,
-        max: 255,
         default: ""
     },
     // like:[{ref:"LikePost",type:mongoose.Schema.Types.ObjectId}],
@@ -111,12 +98,10 @@ const UserSchema = new Schema({
     },
     status: {
         type: Number,
-        max: 50,
         default: 1
     },
     verified: {
         type: Number,
-        max: 20,
         default: 0
     },
     createdAt: {
@@ -129,8 +114,7 @@ const UserSchema = new Schema({
     },
     token: {
         type: String,
-        max: 255,
-        required: false
+        default:''
     }
 });
 

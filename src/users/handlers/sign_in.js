@@ -10,22 +10,28 @@ var defaults = {}
 const handler = async (request, reply) => {
     try {
         let payload = request.payload;
-        var userName = payload.userName;
-        console.log(userName);
+        
+        var userName = _.get(request,"payload.userName","");
+        var email = _.get(request,"payload.email","");
         var password = payload.password;
         var data = await Users.findOne({
            userName
         });
         if (!data) {
+             var data = await Users.findOne({
+           email
+        });
+            if(!data){
             return reply({
-                status: 0,
+                status: false,
                 status_msg: "error",
-                message: "Please check your Username!"
-            })
+                message: "Please check your Username or Email. "
+            })     
+        }
         }
         if (data.status == 0) {
             return reply({
-                status: 0,
+                status: false,
                 status_msg: "error",
                 message: "Your account has been deactivated. Please contact to admin."
             })
@@ -33,7 +39,6 @@ const handler = async (request, reply) => {
         var is_correct = await Helpers.isPasswordCorrect(data.password, data.salt, password);
         if (is_correct) {
             const token = await Helpers.createJwt(data);
-            console.log(token + "token");
             var user_id = data._id;
             var users = await Users.findOneAndUpdate({
                 _id: user_id
@@ -69,8 +74,7 @@ const handler = async (request, reply) => {
     } catch (error) {
         return reply({
             status: false,
-            message: error.message,
-            // data: {}
+            message: error.message
         })
     }
 }
@@ -85,7 +89,8 @@ const routeConfig = {
         notes: ['On success'],
         validate: {
             payload: {
-                userName: Joi.string().required(),
+                userName: Joi.string().optional(),
+                email:Joi.string().optional(),
                 password: Joi.string().required()
             }
         },

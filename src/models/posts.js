@@ -6,7 +6,7 @@ const Schema = Mongoose.Schema;
 const PostSchema = new Schema({
     postTitle: {
         type: String,
-        max: 255
+        default:""
     },
     userId: {
         ref: "Users",

@@ -40,77 +40,25 @@ const handler = async (request, reply) => {
             })
         }
         const createPost = await new Posts(payload);
-        await createPost.save(async function(err, data1) {
-            if (err) {
+        var data1 = await createPost.save();
+        if (data1) {
+            var user = await Users.findOne({
+                _id: data1.userId
+            })
+            user.posts.push(data1._id);
+            var result = await user.save();
+            if (result) {
                 return reply({
-                    status: false,
-                    message: err
+                    status: true,
+                    message: "Created new post successfully."
                 });
-            } else {
-                var user = await Users.findOne({
-                    _id: data1.userId
-                })
-                user.posts.push(data1._id);
-                await user.save(async function(err, result) {
-                    if (err) {
-                        return reply({
-                            status: false,
-                            message: err
-                        });
-                    } else {
-                        var count = 0;
-                        var imageLength = payload['postImage'].length;
-                        if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
-                        for (var i = 0; i < imageLength; i++) {
-                            // payload['postImage'][i].pipe(fs.createWriteStream("D:/balram/projects/linkites/fly-friends-node/uploads/",payload['postImage'][i].hapi.filename))  
-                            var imageData = payload['postImage'][i];
-                            var imageName = payload['postImage'][i].hapi.filename;
-                            var path = imageBaseUrl + imageName;
-                            var file = fs.createWriteStream(path);
-                            file.on('error', function(err) {
-                                console.log(err);
-                            })
-                            var uploadsData = {
-                                //postImage:payload['postImage'][i].hapi.filename,
-                                postImage: imageBaseUrl + imageName,
-                                postId: data1._id
-                            }
-                            var postImages = await new PostImages(uploadsData);
-                            postImages.save(async function(err, dataImage) {
-                                if (!err) {
-                                    var post = await Posts.findOne({
-                                        _id: data1._id
-                                    });
-                                    post.images.push(dataImage._id);
-                                    await post.save(async function(err, savePostImage) {
-                                        if (err) {
-                                            console.log("err1=======>" + err);
-                                        } else {
-                                            count++
-                                            if (count == imageLength) {
-                                                return reply({
-                                                    status: true,
-                                                    message: "Created new post successfully."
-                                                });
-                                            }
-                                        }
-                                    })
-                                } else {
-                                    console.log("err2=======>" + err);
-                                }
-                            })
-                        }
-
-                    }
-                })
-
             }
-        });
+        }
     } catch (error) {
         return reply({
             status: false,
             message: error.message
-        })
+        });
     }
 };
 
@@ -126,8 +74,8 @@ const routeConfig = {
             payload: {
                 postTitle: Joi.string().optional(),
                 userId: Joi.string().required(),
-                postImageName: Joi.string().optional(),
-                postImage: Joi.any().optional(),
+                // postImageName: Joi.string().optional(),
+                // postImage: Joi.any().optional(),
                 token: Joi.string().required()
             }
         },

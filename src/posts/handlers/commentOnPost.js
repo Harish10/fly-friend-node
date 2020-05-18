@@ -30,46 +30,33 @@ const handler = async (request, reply) => {
                 message: "Token is invalid."
             })
         }
-    } catch (error) {
+    
+    const postId = _.get(request, 'payload.postId', '');
+    const post = await Posts.findOne({
+        _id: postId
+    });
+    const user = await Users.findOne({
+        _id: userId
+    });
+    var commentObj = await new Comments(payload);
+    var data=  await commentObj.save();
+            if(data){
+            post.comments.push(commentObj._id);
+            var saveData = await post.save();
+                    if(saveData){
+                        return reply({
+                        status: true,
+                        message: "Comment On post successfully."
+                    })    
+                    }    
+                }
+            } catch (error) {
         return reply({
             status: false,
             message: error.message
         })
 
     }
-    const postId = _.get(request, 'payload.postId', '');
-    const post = await Posts.findOne({
-        _id: postId
-    });
-    const userId = _.get(request, 'payload.userId', '');
-    const user = await Users.findOne({
-        _id: userId
-    });
-    // console.log(user);
-    var commentObj = await new Comments(payload);
-    await commentObj.save(async function(error, data) {
-        if (error) {
-            return reply({
-                status: false,
-                message: error
-            });
-        } else {
-            post.comments.push(commentObj._id);
-            await post.save(function(error) {
-                if (error) {
-                    return reply({
-                        status: false,
-                        message: error
-                    })
-                } else {
-                    return reply({
-                        status: true,
-                        message: "Comment On post successfully."
-                    })
-                }
-            })
-        }
-    })
 };
 
 const routeConfig = {

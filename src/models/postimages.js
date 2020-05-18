@@ -9,7 +9,7 @@ var PostImagesSchema = new Schema({
     },
     postImage: {
         type: String,
-        max: 255
+        default:''
     }
 });
 

@@ -24,13 +24,8 @@ const handler=async (request,reply)=>{
 					message:"Your token is invalid."
 				})
 		}
-		await Posts.find({userId:userId}).populate('comments').populate('likes').populate('images').exec(function(err,postData){
-				if(err){
-					return reply({
-						status:false,
-						message:err
-					})
-				}else{
+		var postData=await Posts.find({userId:userId}).populate('comments').populate('likes').populate('images');
+			if(postData){
 					if(postData.length>0){
 						var postData=JSON.parse(JSON.stringify(postData));
 						return reply({
@@ -46,8 +41,6 @@ const handler=async (request,reply)=>{
 						})
 					}
 				}
-		})
-
 	}catch(err){
 		return reply({
 			status:false,
