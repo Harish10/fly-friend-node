@@ -3,15 +3,15 @@ import Hoek from 'hoek';
 import Joi from 'joi';
 import Chats from '../../models/chat';
 import Users from '../../models/users';
-var defaults={};
+var defaults = {};
 
-const handler=async (request,reply)=>{
-try{
-    let payload=request.payload;
-     const userId = _.get(request, 'payload.senderId', '');
+const handler = async (request, reply) => {
+    try {
+        let payload = request.payload;
+        const userId = _.get(request, 'payload.userId', '');
         const token = _.get(request, 'payload.token', '');
         var data = await Users.findOne({
-            userId
+            _id: userId
         })
         if (!data) {
             return reply({
@@ -27,42 +27,35 @@ try{
                 message: "Token is invalid."
             })
         }
-        var chatObj=await new Chats(payload);
+        var data = await Chats.find({
+            senderId: userId
+        });
 
-        var data =await chatObj.save();
-        console.log(data)
-        if(data){
-            var senderId=_.get(request,'payload.senderId','');
-            var reciverId=_.get(request,'payload.reciverId','');
-            var messageData = await Chats.find({$and:[{senderId:senderId},{reciverId:reciverId}]});
-            if(messageData){
-                console.log('sss');
-                io.emit('message',messageData);
-            }else{
-                messageData="no data";
-                console.log('sss');
-                io.emit('message',messageData);
-            }
+        var final_data = _.uniqBy(data, 'receiverId');
+        return reply({
+            status: true,
+            message: "Get all chat history.",
+            data: final_data
+        })
 
-        }
-
-}catch(error){
-	reply({status:false,message:error.message})
-}
+    } catch (error) {
+        reply({
+            status: false,
+            message: error.message
+        })
+    }
 }
 
-const routeConfig={
-	method: 'POST',
-    path: '/sendMessage',
+const routeConfig = {
+    method: 'POST',
+    path: '/getChatHistory',
     config: {
         tags: ['api', 'posts'],
-        description: 'Added message on this post.',
+        description: 'Get Chat history.',
         notes: ['On success'],
         validate: {
             payload: {
-                message: Joi.string().required(),
-                senderId: Joi.string().required(),
-                receiverId:Joi.string().required(),
+                userId: Joi.string().required(),
                 token: Joi.string().required()
             }
         },
@@ -70,7 +63,7 @@ const routeConfig={
     }
 }
 
-export default (server, opts,io) => {
+export default (server, opts, socket) => {
     defaults = Hoek.applyToDefaults(defaults, opts);
     server.route(routeConfig);
 }

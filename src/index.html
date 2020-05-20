@@ -1,63 +1,63 @@
-<h1>balram</h1><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <title>Sockets Example</title>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.min.js"></script>
-    
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/addons/p5.sound.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
     <script type="text/javascript">
     	var socket;
+      socket = io.connect('http://localhost:3001');
 
-function setup() {
-  createCanvas(400, 400);
-  background(0);
-  // Start a socket connection to the server
-  // Some day we would run this server somewhere else
-  socket = io.connect('http://localhost:3001');
-  // We make a named event called 'mouse' and write an
-  // anonymous callback function
-  socket.on('mouse',
-    // When we receive data
-    function(data) {
-      console.log("Got: " + data.x + " " + data.y);
-      // Draw a blue circle
-      fill(0,0,255);
-      noStroke();
-      ellipse(data.x, data.y, 20, 20);
-    }
-  );
+function submitfunction(){
+  // var senderId = "124324";
+  // var message = $('#m').val();
+  // var receiverId="1234243"
+  // var token="2432432"
+  payload={
+     senderId:"5ec4c03e227b9b49c8feaa55",
+     message : $('#m').val(),
+     receiverId:"5ec2371115a81b3dd45b50d7",
+     token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzRjMDNlMjI3YjliNDljOGZlYWE1NSIsImNyZWF0ZWRBdCI6MTU4OTk1MjYwMTIxNCwiaWF0IjoxNTg5OTUyNjAxLCJleHAiOjIwMjE5NTI2MDF9.JBCSwWs5okj-BxPeHUfNvKMMSxkv9Ui9lFgYknxM0MM"
+  }
+  if(payload.message != '') {
+  socket.emit('chatMessage', payload);
+}
+$('#m').val('').focus();
+  return false;
 }
 
-function draw() {
-  // Nothing
+function notifyTyping() { 
+  var user = $('#user').val();
+  socket.emit('notifyUser', user);
 }
+socket.on('notifyUser', function(user){
+  var me = $('#user').val();
+  if(user != me) {
+    $('#notifyUser').text(user + ' is typing ...');
+  }
+  setTimeout(function(){ $('#notifyUser').text(''); }, 10000);;
+});
+socket.on('chatMessage', function(data){
+  console.log(data);
+})
 
-function mouseDragged() {
-  // Draw some white circles
-  fill(255);
-  noStroke();
-  ellipse(mouseX,mouseY,20,20);
-  // Send the mouse coordinates
-  sendmouse(mouseX,mouseY);
+$(document).ready(function(){
+  var name = makeid();
+  $('#user').val(name);
+  socket.on('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
+});
+
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for( var i=0; i < 5; i++ ) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 }
-
-// Function for sending to the socket
-function sendmouse(xpos, ypos) {
-  // We are sending!
-  console.log("sendmouse: " + xpos + " " + ypos);
-  
-  // Make a little object with  and y
-  var data = {
-    x: xpos,
-    y: ypos
-  };
-
-  // Send that object to the socket
-  socket.emit('mouse',data);
-}
-
     </script>
 
     <style>
@@ -67,5 +67,11 @@ function sendmouse(xpos, ypos) {
     </style>
   </head>
   <body>
+    <ul id="messages"></ul>
+    <span id="notifyUser"></span>
+    <form id="form" action="" onsubmit="return submitfunction();" > 
+      <input type="hidden" id="user" value="sdsd" /><input id="m" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type yor message here.." /><input type="submit" id="button" value="Send"/> 
+    </form>
+
   </body>
 </html>

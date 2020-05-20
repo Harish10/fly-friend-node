@@ -5,6 +5,10 @@ const ChatSchema=new Schema({
 		type:String,
 		default:''
 	},
+	lastMessage:{
+		type:String,
+		default:''
+	},
 	senderId:{
 		type:Schema.Types.ObjectId,
 		ref:'Users'
