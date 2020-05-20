@@ -5,6 +5,8 @@ import Helpers from '../../helpers'
 import Posts from '../../models/posts'
 import Users from '../../models/users'
 import LikePost from '../../models/likePost'
+import mongoose,{ObjectId} from 'mongoose'
+import {ObjectID} from 'mongodb'
 
 /** 
 Api to like on post
@@ -16,8 +18,10 @@ const handler = async (request, reply) => {
         let payload = request.payload;
         const userId = _.get(request, 'payload.userId', '');
         const token = _.get(request, 'payload.token', '');
+        console.log(userId);
+        console.log(token);
         var data = await Users.findOne({
-            _id: userId
+            _id:userId
         })
         if (!data) {
             return reply({
@@ -34,29 +38,22 @@ const handler = async (request, reply) => {
             })
         }
         // const userId=_.get(request,'payload.userId','');
-        const postId = _.get(request, 'payload.userId', '');
+        const postId = _.get(request, 'payload.postId', '');
         var where = {
-            postId: postId,
+            postId :postId,
             userId: userId
         }
-        var likeData = await LikePost.find({
-            $and: [{
-                userId: userId
-            }, {
-                postId: postId
-            }]
-        });
-        console.log(likeData);
+        console.log(where);
+        // var likeData = await LikePost.findOne().where(where);
+        var likeData = await LikePost.findOne(where);
+        
         if (likeData) {
-            console.log(likeData);
+            console.log('enter');
             if (likeData.isLike == 1) {
                 payload.isLike = 0;
-                var upload_data = {
-                    isLike: payload.isLike
-                }
                 // console.log("if"+likeData[0].isLike);
-                var likeObj = new LikePost(upload_data);
-                var data=await LikePost.findOneAndUpdate(where, upload_data)
+                // var likeObj = new LikePost(upload_data);
+                var data=await LikePost.findOneAndUpdate(where,{$set:{isLike:payload.isLike}},{new:true});
                 if(data){
                     return reply({
                         status: true,
@@ -65,18 +62,15 @@ const handler = async (request, reply) => {
                 }
             } else {
                 payload.isLike = 1;
-                var upload_data = {
-                    isLike: payload.isLike
-                }
+                
                 var likeObj = new LikePost(upload_data);
-                var data=await LikePost.findOneAndUpdate(where, upload_data)
-                if(data){
+                var data=await LikePost.findOneAndUpdate(where,{$set:{isLike:payload.isLike}},{new:true});
                     return reply({
                         status: true,
                         message: "Like the post successfully."
                     });
                 }
-            }
+            
         } else {
             const user = await Users.findOne({
                 _id: payload.userId

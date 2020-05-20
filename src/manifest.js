@@ -52,8 +52,12 @@ const manifest = {
     },
     {
       plugin: "./users"
-    },{
+    },
+    {
       plugin:"./posts"      
+    },
+    {
+    plugin:"./chats"
     }
   ]
 }

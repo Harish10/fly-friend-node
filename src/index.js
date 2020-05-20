@@ -12,6 +12,8 @@ import Glue from 'glue'
  *
  **/
 
+
+
 import Manifest from './manifest'
 
 
@@ -33,16 +35,16 @@ composer((err, server) => {
       version: '1.0.1',
       options: {}
     }
+    // server.connection({ port: 4001, labels: ['chat'] });
     server.register([register])
     server.start(() => {
+      // 'http://0.0.0.0:3001'
       // const env = process.env.NODE_ENV
       // const msg = `${env} server started at ${server.info.uri}`
       console.log('Server started at ' + server.info.uri + ' ');
       // server.log(['server', 'info'], msg)
     })
   })
-
-
 })
 
 export default composer

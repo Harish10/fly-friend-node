@@ -14,16 +14,15 @@ const handler = async (request, reply) => {
         const user = await Users.findOne({
             email
         })
-
         if (!user) {
             const user_name = _.get(request, "payload.userName", payload.firstName);
             const userName = await Users.findOne({
                 userName:user_name
             })
             if (!userName) {
+                console.log('enter');
                 let payload = request.payload;
                 const user_name = _.get(request, "payload.userName", payload.firstName);
-                console.log(user_name);
                 payload.userName=user_name;
                 var password = payload.password;
                 var saltPass = Helpers.hashPassword(password);
