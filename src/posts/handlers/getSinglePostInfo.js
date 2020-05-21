@@ -5,6 +5,10 @@ import Helpers from '../../helpers.js'
 import Posts from '../../models/posts'
 import Users from '../../models/users'
 
+/** 
+Api to get single post info.
+**/
+
 var defaults={};
 
 const handler=async (request,reply)=>{
@@ -61,7 +65,7 @@ const routeConfig={
 	path:'/getSinglePostInfo',
 	config:{
 		tags:['api','posts'],
-		description:'Get all posts successfully.',
+		description:'Get single posts info.',
     	notes:['On success'],
     		validate:{
       				payload:{

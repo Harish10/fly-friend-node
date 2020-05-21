@@ -3,9 +3,11 @@ import Hoek from 'hoek'
 import Joi from 'joi'
 import Helpers from '../../helpers'
 import Users from '../../models/users'
+
 /** 
 Api to create new user
 **/
+
 var defaults = {};
 const handler = async (request, reply) => {
     const email = _.get(request, 'payload.email', '')

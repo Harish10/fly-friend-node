@@ -1,20 +1,19 @@
-import _ from 'lodash'
-import Hoek from 'hoek'
-import Users from '../../models/users'
-import Posts from '../../models/posts'
-import Comments from '../../models/commentPost'
-import Joi from 'Joi'
+import _ from 'lodash';
+import Hoek from 'hoek';
+import Joi from 'joi';
+import Channels from '../../models/channels.js';
+import Users from '../../models/users';
 
 /** 
-Api to create comment on post.
+Api to add new member in the group.
 **/
 
 var defaults = {};
 
 const handler = async (request, reply) => {
     try {
-        var payload = request.payload;
 
+        let payload = request.payload;
         const userId = _.get(request, 'payload.userId', '');
         const token = _.get(request, 'payload.token', '');
         var data = await Users.findOne({
@@ -34,54 +33,53 @@ const handler = async (request, reply) => {
                 message: "Token is invalid."
             })
         }
-    
-    const postId = _.get(request, 'payload.postId', '');
-    const post = await Posts.findOne({
-        _id: postId
-    });
-    const user = await Users.findOne({
-        _id: userId
-    });
-    var commentObj = await new Comments(payload);
-    var data=  await commentObj.save();
-            if(data){
-            post.comments.push(commentObj._id);
-            var saveData = await post.save();
-                    if(saveData){
-                        return reply({
+        const members = _.get(request, 'payload.members', '');
+        var count = 0;
+        var membersLength = members.length;
+        const channelId = _.get(request, 'payload.channelId', '');
+        if (membersLength > 0) {
+            for (var i = 0; i < membersLength; i++) {
+                var channel = await Channels.findOne({
+                    _id: channelId
+                });
+                channel.members.push(members[i]);
+                await channel.save();
+                count++;
+                if (count == membersLength) {
+                    return reply({
                         status: true,
-                        message: "Comment On post successfully."
-                    })    
-                    }    
+                        message: "New member added."
+                    })
                 }
-            } catch (error) {
+            }
+        }
+    } catch (error) {
         return reply({
-            status: false,
-            message: error.message
+            "status": false,
+            "message": error.message
         })
-
     }
-};
+}
+
 
 const routeConfig = {
     method: 'POST',
-    path: '/commentOnPost',
+    path: '/addNewMembers',
     config: {
         tags: ['api', 'posts'],
-        description: 'Added comment on this post.',
+        description: 'Add new member.',
         notes: ['On success'],
         validate: {
             payload: {
-                postId: Joi.string().required(),
                 userId: Joi.string().required(),
                 token: Joi.string().required(),
-                comment: Joi.string().required()
+                members: Joi.any().required(),
+                channelId: Joi.string().required()
             }
         },
         handler
     }
 }
-
 
 export default (server, opts) => {
     defaults = Hoek.applyToDefaults(defaults, opts);

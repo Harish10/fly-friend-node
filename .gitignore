@@ -1,7 +1,8 @@
 /node_modules
 /build
 /public
-
+/src/chats/handlers/getChannelHistory
+/src/chats/handlers/getChatHistory
 package-lock.json
 yarn-error.log
 

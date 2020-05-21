@@ -122,7 +122,7 @@ const routeConfig = {
     path: '/createPost',
     config: {
         tags: ['api', 'posts'],
-        description: 'Create new post successfully.',
+        description: 'Create new post.',
         notes: ['On success'],
         validate: {
             payload: {

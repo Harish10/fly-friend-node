@@ -3,6 +3,11 @@ import Hoek from 'hoek';
 import Joi from 'joi';
 import Chats from '../../models/chat';
 import Users from '../../models/users';
+
+/** 
+Api to Get Chat History.
+**/
+
 var defaults = {};
 
 const handler = async (request, reply) => {
@@ -63,7 +68,7 @@ const routeConfig = {
     }
 }
 
-export default (server, opts, socket) => {
+export default (server, opts) => {
     defaults = Hoek.applyToDefaults(defaults, opts);
     server.route(routeConfig);
 }

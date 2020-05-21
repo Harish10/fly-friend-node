@@ -5,6 +5,11 @@ import Helpers from '../../helpers.js'
 import Posts from '../../models/posts'
 import Users from '../../models/users'
 
+
+/** 
+Api to get all post.
+**/
+
 var defaults={};
 
 const handler=async (request,reply)=>{
@@ -53,7 +58,7 @@ const routeConfig={
 	path:'/getAllPosts',
 	config:{
 		tags:['api','posts'],
-		description:'Get all posts successfully.',
+		description:'Get all posts.',
     	notes:['On success'],
     		validate:{
       				payload:{

@@ -9,7 +9,7 @@ import Users from '../../models/users'
 import fs from 'fs'
 import path from 'path'
 import PostImages from '../../models/postImages'
-var imageBaseUrl = "D:/balram/projects/linkites/fly-friends-node/uploads/";
+// var imageBaseUrl = "D:/balram/projects/linkites/fly-friends-node/uploads/";
 // var imageBaseUrl=__dirname+"/uploads/";
 
 /** 
@@ -68,7 +68,7 @@ const routeConfig = {
     path: '/createPost',
     config: {
         tags: ['api', 'posts'],
-        description: 'Create new post successfully.',
+        description: 'Create new post.',
         notes: ['On success'],
         validate: {
             payload: {

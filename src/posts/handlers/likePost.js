@@ -111,7 +111,7 @@ const routeConfig = {
     path: '/likePost',
     config: {
         tags: ['api', 'posts'],
-        description: 'Create new post successfully.',
+        description: 'Like on post.',
         notes: ['On success'],
         validate: {
             payload: {

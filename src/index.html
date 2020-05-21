@@ -16,9 +16,9 @@ function submitfunction(){
   // var receiverId="1234243"
   // var token="2432432"
   payload={
-     senderId:"5ec4c03e227b9b49c8feaa55",
+     senderId:"5ec2371115a81b3dd45b50d7",
      message : $('#m').val(),
-     receiverId:"5ec2371115a81b3dd45b50d7",
+     receiverId:"5ec4c03e227b9b49c8feaa51",
      token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzRjMDNlMjI3YjliNDljOGZlYWE1NSIsImNyZWF0ZWRBdCI6MTU4OTk1MjYwMTIxNCwiaWF0IjoxNTg5OTUyNjAxLCJleHAiOjIwMjE5NTI2MDF9.JBCSwWs5okj-BxPeHUfNvKMMSxkv9Ui9lFgYknxM0MM"
   }
   if(payload.message != '') {
@@ -44,20 +44,33 @@ socket.on('chatMessage', function(data){
 })
 
 $(document).ready(function(){
-  var name = makeid();
-  $('#user').val(name);
-  socket.on('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
+  // var name = makeid();
+  // $('#user').val(name);
+  // socket.on('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
+ var payload={
+   id:"5ec2371115a81b3dd45b50d7",
+   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzRjMDNlMjI3YjliNDljOGZlYWE1NSIsImNyZWF0ZWRBdCI6MTU4OTk1MjYwMTIxNCwiaWF0IjoxNTg5OTUyNjAxLCJleHAiOjIwMjE5NTI2MDF9.JBCSwWs5okj-BxPeHUfNvKMMSxkv9Ui9lFgYknxM0MM"
+ }
+   socket.emit('online',payload);
+
 });
 
-function makeid() {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+ var payload={
+   id:"5ec2371115a81b3dd45b50d7",
+   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzRjMDNlMjI3YjliNDljOGZlYWE1NSIsImNyZWF0ZWRBdCI6MTU4OTk1MjYwMTIxNCwiaWF0IjoxNTg5OTUyNjAxLCJleHAiOjIwMjE5NTI2MDF9.JBCSwWs5okj-BxPeHUfNvKMMSxkv9Ui9lFgYknxM0MM"
+ }
+   socket.emit('ofline',payload);
 
-  for( var i=0; i < 5; i++ ) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
+
+// function makeid() {
+//   var text = "";
+//   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+//   for( var i=0; i < 5; i++ ) {
+//     text += possible.charAt(Math.floor(Math.random() * possible.length));
+//   }
+//   return text;
+// }
     </script>
 
     <style>

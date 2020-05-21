@@ -78,9 +78,9 @@ const UserSchema = new Schema({
         type: String,
         default: ""
     },
-    deviceId: {
-        type: String,
-        default: ""
+    lastOnlineTime: {
+        type: Date,
+        default: Date.now
     },
     deviceType: {
         type: String,
@@ -100,6 +100,10 @@ const UserSchema = new Schema({
         type:Number,
         default:0
     },
+    // lastOnlineTime:{
+    //     Type:String,
+    //     default:''
+    // },
     status: {
         type: Number,
         default: 1
