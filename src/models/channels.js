@@ -17,6 +17,7 @@ var ChannelSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:"Users"
 	},
+	users:[],
 	createdAt: {
         type: Date,
         default: Date.now

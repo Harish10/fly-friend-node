@@ -3,6 +3,8 @@
 /public
 /src/chats/handlers/getChannelHistory
 /src/chats/handlers/getChatHistory
+/src/chats/handlers/socketcheck1
+
 package-lock.json
 yarn-error.log
 

@@ -28,17 +28,17 @@ $('#m').val('').focus();
   return false;
 }
 
-// function notifyTyping() { 
-//   var user = $('#user').val();
-//   socket.emit('notifyUser', user);
-// }
-// socket.on('notifyUser', function(user){
-//   var me = $('#user').val();
-//   if(user != me) {
-//     $('#notifyUser').text(user + ' is typing ...');
-//   }
-//   setTimeout(function(){ $('#notifyUser').text(''); }, 10000);;
-// });
+function notifyTyping() { 
+  var user = $('#user').val();
+  socket.emit('notifyUser', user);
+}
+socket.on('notifyUser', function(user){
+  var me = $('#user').val();
+  if(user != me) {
+    $('#notifyUser').text(user + ' is typing ...');
+  }
+  setTimeout(function(){ $('#notifyUser').text(''); }, 10000);;
+});
 socket.on('chatMessage', function(data){
   console.log(data);
 })
@@ -48,44 +48,40 @@ $(document).ready(function(){
   // $('#user').val(name);
   // socket.on('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
  var payload={
-   id:"5ec653d5faf25e116461c7c6",
-   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
+id:"5ec63ac1d49d4f48f827f814",
+  token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
  }
    socket.emit('online',payload);
 
 });
 //User ofline
  var payload={
-   userId:"5ec653d5faf25e116461c7c6",
-   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
+   userId:"5ec63ac1d49d4f48f827f814",
+  token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
  }
  socket.emit('ofline',payload);
 
 // create Channel
-var payload={
-   userId:"5ec653d5faf25e116461c7c6",
-   title:"New group",
-   isNew:true,
-   message:"Hello i am ....",
-   members:["5ec63ac1d49d4f48f827f814","5ec653b1faf25e116461c7c4"],
-   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
-}
-socket.emit('create_channel',payload);
-
-//send back message from server to members
-socket.on('message',data);
+// var payload={
+//    userId:"5ec653d5faf25e116461c7c6",
+//    title:"New group",
+//    isNew:true,
+//    message:"Hello i am ....",
+//    members:["5ec63ac1d49d4f48f827f814","5ec653b1faf25e116461c7c4"],
+//    token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
+// }
+//   socket.emit('create_channel',payload);
 
 
+// function makeid() {
+//   var text = "";
+//   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-//send message to the channel via socket.
-var payload1={
-   channelId:"5ec7ed4f2515625e30414d72",
-   message:"Hy brother how are you.",
-   userId:"5ec63ac1d49d4f48f827f814",
-   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
-}
-socket.emit('create_message',payload1);
-
+//   for( var i=0; i < 5; i++ ) {
+//     text += possible.charAt(Math.floor(Math.random() * possible.length));
+//   }
+//   return text;
+// }
     </script>
 
     <style>
