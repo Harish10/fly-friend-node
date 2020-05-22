@@ -33,24 +33,40 @@ const handler = async (request, reply) => {
                 message: "Token is invalid."
             })
         }
-        const keyword=_.get(request,'payload.search','');
-        const regex=new RegExp(keyword,'i'); 
-        const query={
-            $or:[{firstName:{$regex:regex}},{email:{$regex:regex}},{lastName:{$regex:regex}}]
+        const keyword = _.get(request, 'payload.search', '');
+        const regex = new RegExp(keyword, 'i');
+        const query = {
+            $or: [{
+                firstName: {
+                    $regex: regex
+                }
+            }, {
+                email: {
+                    $regex: regex
+                }
+            }, {
+                lastName: {
+                    $regex: regex
+                }
+            }]
         }
-        var userData = await Users.find(query,{_id:true,firstName:true,lastName:true});
-            if(!userData ||!userData.length){
-                return reply({
-                    status:false,
-                    message:"User not found."
-                });
-            }else{
-                return reply({
-                    status:true,
-                    data:userData
-                })
-            }
-               
+        var userData = await Users.find(query, {
+            _id: true,
+            firstName: true,
+            lastName: true
+        });
+        if (!userData || !userData.length) {
+            return reply({
+                status: false,
+                message: "User not found."
+            });
+        } else {
+            return reply({
+                status: true,
+                data: userData
+            })
+        }
+
     } catch (error) {
         reply({
             status: false,
@@ -70,7 +86,7 @@ const routeConfig = {
             payload: {
                 userId: Joi.string().required(),
                 token: Joi.string().required(),
-                search:Joi.string().required()
+                search: Joi.string().required()
             }
         },
         handler
