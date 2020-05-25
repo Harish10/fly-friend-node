@@ -1,12 +1,9 @@
 //import getChatHistory from './handlers/getChatHandler';
 import socketcheck from './handlers/socketcheck';
-import socketcheck1 from './handlers/socketcheck1';
-
-import createChannel from './handlers/createChannel';
-import addNewMember from './handlers/addNewMember';
 import getChannelById from './handlers/getChannelById';
 import getUserSearch from './handlers/getUserSearch';
-// import getChannelHistory from './handlers/getChannelHistory';
+import getMyChannels from './handlers/getMyChannels';
+import getMessagesByChId from './handlers/getMessagesByChId';
 import {
     ObjectID
 } from 'mongodb';
@@ -136,7 +133,7 @@ exports.register = (server, options, next) => {
         //CREATE CHANNEL
         socket.on('create_channel', async (payload) => {
             const userId = payload.userId
-            // console.log(socket.id);
+            console.log(socket.id);
             var socketId = socket.id
             const token = payload.token
             var data = await Users.findOne({
@@ -175,6 +172,8 @@ exports.register = (server, options, next) => {
                         await channel.save();
                         count++;
                         if (count == membersLength) {
+                            channel.members.push(userId);
+                            await channel.save();
                             var messagePayload = {
                                 userId: userId,
                                 channelId: channelId,
@@ -183,6 +182,7 @@ exports.register = (server, options, next) => {
                             const messageObj = await new Messages(messagePayload);
                             var result = await messageObj.save();
                             if (result) {
+                                //update lastmessage
                                 //let send back to all member in this channel with new channel created     
                                 let memberConnection = [];
                                 var channelObject = await Channels.findOne({
@@ -208,6 +208,7 @@ exports.register = (server, options, next) => {
                                     lastName: 1
                                 }
                                 var userData = await Users.find(query, options);
+
                                 channelObject.members = userData;
                                 _.each(members, (id) => {
                                     // var user_id=id;
@@ -220,7 +221,9 @@ exports.register = (server, options, next) => {
                                     //         console.log('success');
                                     //         })
                                     //     }
-                                    socket.emit('message', channelObject);
+                                    if (id !== userId) {
+                                        socket.emit('message', channelObject);
+                                    }
                                     // console.log(channelObject);
                                     console.log("success");
                                 })
@@ -230,7 +233,7 @@ exports.register = (server, options, next) => {
                 }
             }
         });
-        socket.on('create_message', (payload) => {
+        socket.on('create_message', async (payload) => {
             // console.log(payload);
             const userId = payload.userId
             // console.log(socket.id);
@@ -254,6 +257,17 @@ exports.register = (server, options, next) => {
             var messageObj = await new Messages(payloadMessage);
             var result = await messageObj.save();
             if (result) {
+                //update lastmessage value
+                await Channels.findOneAndUpdate({
+                    _id: channelId
+                }, {
+                    $set: {
+                        lastMessage: body,
+                        updatedAt: new Date()
+                    }
+                }, {
+                    new: true
+                });
                 //let send back to all member in this channel with new channel created     
                 let memberConnection = [];
                 var channelObject = await Channels.findOne({
@@ -268,6 +282,7 @@ exports.register = (server, options, next) => {
                 });
                 channelObject.users = user
                 //fetch all users  has memberId
+                var members = channelObject.members
                 const query = {
                     _id: {
                         $in: members
@@ -280,6 +295,12 @@ exports.register = (server, options, next) => {
                 }
                 var userData = await Users.find(query, options);
                 channelObject.members = userData;
+
+                const messageArray = await Messages.find({
+                    channelId: channelId
+                });
+
+                channelObject.messages = messageArray
                 _.each(members, (id) => {
                     // var user_id=id;
                     // var memberConnection=connection.filter((con)=>con === user_id && con !== userId);
@@ -291,21 +312,20 @@ exports.register = (server, options, next) => {
                     //         console.log('success');
                     //         })
                     //     }
-                    socket.emit('message', channelObject);
-                    // console.log(channelObject);
+                    if (id != userId) {
+                        socket.emit('message', channelObject);
+                        // count1++;
+                    }
                     console.log("success");
                 })
             }
         });
     });
     getUserSearch(server, options);
-    // getChannelHistory(server, options);
+    getMessagesByChId(server, options);
     getChannelById(server, options);
-    //getChatHistory(server, options);
-    //socketcheck1(server, options);
+    getMyChannels(server, options);
     socketcheck(server, options);
-    createChannel(server, options);
-    addNewMember(server, options);
     next();
 }
 

@@ -17,7 +17,7 @@
          payload={
          senderId:"5ec653d5faf25e116461c7c6",
          message : $('#m').val(),
-         receiverId:"5ec4c03e227b9b49c8feaa51",
+         receiverId:"5ec653b1faf25e116461c7c4",
          token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
          }
          if(payload.message != '') {
@@ -60,26 +60,28 @@
          }
          socket.emit('ofline',payload);
          
-         // create Channel
-         var payload={
-         userId:"5ec653d5faf25e116461c7c6",
-         title:"New group",
-         isNew:true,
-         message:"Hello i am ....",
-         members:["5ec63ac1d49d4f48f827f814","5ec653b1faf25e116461c7c4"],
-         token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
-         }
-         socket.emit('create_channel',payload);
+         //create Channel
+         // var payload={
+         // userId:"5ec63ac1d49d4f48f827f814",
+         // title:"New group",
+         // isNew:true,
+         // message:"Hello i have created new channel.",
+         // members:["5ec653b1faf25e116461c7c4"],
+         // token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
+         // }
+         // socket.emit('create_channel',payload);
          
-         //send back message from server to members
-         socket.on('message',data);
+         // //send back message from server to members
+         socket.on('message',function(data){
+            console.log(data);
+         });
          
          
          
-         //send message to the channel via socket.
+         // //send message to the channel via socket.
          var payload1={
-         channelId:"5ec7ed4f2515625e30414d72",
-         message:"Hy brother how are you.",
+         channelId:"5ecb526deafc172e5092aad4",
+         message:"Hello Everyone.",
          userId:"5ec63ac1d49d4f48f827f814",
          token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
          }

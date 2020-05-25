@@ -17,7 +17,11 @@ var ChannelSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:"Users"
 	},
-	users:[],
+	users:[{
+		type:Schema.Types.ObjectId,
+		ref:'Users'
+	}],
+	messages:[],
 	createdAt: {
         type: Date,
         default: Date.now

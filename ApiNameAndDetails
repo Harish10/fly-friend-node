@@ -1,0 +1,26 @@
+ This is api collection link:->
+ 		"https://www.getpostman.com/collections/309ba099c71d7ac7dc0e"
+
+ Apis Name :
+   	1) User
+   		a)register:- Create new user ParamName like(fistName,lastName,email,password,countryCode,mobileNo,userName).Note:-userName is not mandatory if userName doesn't get so i have internaly manage userName assign firstName.
+   		b)login:- Login User ParamName like(userName/email, password). we can use userName or email 
+   	2) Post 
+   		a) createPost:- Create new post ParamName(userId,postTitle,token).
+   		b) getAllPosts:-Get all post by userId ParamName(userId,token).
+   		c) getSinglePostInfo:Get all  information like(allcomments and like in this post) about particular post ParamName(postId,userId,token).
+   		d) commentOnPost:- Comment on perticular post ParamName(comment,postId,userId,token).
+   		e) likePost:-LikeOrDisLike post ParmName(for likePost-> isLike:1 or for 	disLikePost-> isLike:0,postId,userId,token).Note Api name same for like or dislike. 
+   	3) Chat
+   		getChannelById:- Get all information about channel ParamName(userId,token,channelId).
+   		getUserSearch:- User search ParamName(userId,token,search).
+
+   		a)Created events for one to one chat:-
+   			i) connection and disconnection events to log when a user connected and left
+   			ii) create and fire custom events using the "socket.emit" function like (chatMessage,online,ofline);
+	   		iii)(chatMessage,online,ofline) these emit events from clients then sever handle these events using "socket.on" function.
+	   		iV) create one event in server side to send the response to client using "io.emit" like(chatMessage).
+	   	b) created events for one to multiple chat.
+	   		i) connection and disconnection events to log when a user connected and left
+   			ii) create and fire custom events using the "socket.emit" function like (createChannel,createMessage);
+	   		iii)(createChannel,createMessage) these emit events from clients then sever handle these events using "socket.on" function.
