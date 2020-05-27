@@ -4,7 +4,6 @@ import Boom from 'boom'
 import Jwt from 'jsonwebtoken'
 import Hoek from 'hoek'
 import crypto from 'crypto';
-
 import constants from './constants'
 import Config from './config'
 // import GoogleService from './services/google_service'
@@ -21,6 +20,9 @@ import AwsServices from './services/aws_service'
 /*eslint-disable no-magic-numbers */
 /*eslint camelcase: [2, {properties: "never"}]*/
 /*eslint no-nested-ternary: 0*/
+
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 
 const extractUserId = (request) => {
     return _.get(request, 'auth.credentials.id', false)
@@ -114,12 +116,17 @@ export const generateSalt = (length = 255) => {
 }
 
 export const hashPassword = (userpassword) => {
-    var salt = genRandomString(255); /** Gives us salt of length 16 */
-    var passwordData = sha512(userpassword, salt);
-    return {
-        salt: passwordData.salt,
-        hash: passwordData.passwordHash
-    };
+    return bcrypt.hashSync(userpassword, salt);
+    // var salt = genRandomString(255); /** Gives us salt of length 16 */
+    // var passwordData = sha512(userpassword, salt);
+    // return {
+    //     salt: passwordData.salt,
+    //     hash: passwordData.passwordHash
+    // };
+}
+
+export const matchPassword = (password, hasPassword) => {
+    return bcrypt.compareSync(password, hasPassword);
 }
 
 export const isPasswordCorrect = (savedPass, salt, userpassword) => {
@@ -142,5 +149,6 @@ export default {
     generatePassword,
     sessionrefresh,
     isPasswordCorrect,
-    hashPassword
+    hashPassword,
+    matchPassword
 }

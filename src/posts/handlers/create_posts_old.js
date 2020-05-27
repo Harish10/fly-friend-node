@@ -8,7 +8,7 @@ import Users from '../../models/users'
 // const awsServices = new AwsServices()
 import fs from 'fs'
 import path from 'path'
-import PostImages from '../../models/postImages'
+import PostImages from '../../models/postimages'
 var imageBaseUrl = "D:/balram/projects/linkites/fly-friends-node/uploads/";
 // var imageBaseUrl=__dirname+"/uploads/";
 
