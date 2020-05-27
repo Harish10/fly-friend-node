@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import Hoek from 'hoek'
-import Joi from 'Joi'
+import Joi from 'joi'
 import Helpers from '../../helpers.js'
 import Posts from '../../models/posts'
 import Users from '../../models/users'
