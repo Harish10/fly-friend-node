@@ -29,7 +29,7 @@ const handler = async (request, reply) => {
 		} else {
 			return reply({
 				status: false,
-				message: 'Email already exists.',
+				message: 'Email already exists',
 			})
 		}
   } catch (error) {

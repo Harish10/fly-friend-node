@@ -23,19 +23,19 @@ const handler = async (request, reply) => {
 				const token = Helpers.createJwt(user);
 				return reply({
 					status: true,
-					message: "Login successfully. ",
+					message: "Login successfully",
 					data: token
 				}) 
 			} else {
 				return reply({
 					status: false,
-					message: "Your password is incorrect. "
+					message: "Your password is incorrect"
 				})   
 			}
 		} else {
 			return reply({
 				status: false,
-				message: "Your email is incorrect. "
+				message: "Your email is incorrect"
 			})   
 		} 
   } catch (error) {
