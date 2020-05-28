@@ -17,6 +17,10 @@ const ChatSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:'Users'
 	},
+	user:{
+		type:Schema.Types.ObjectId,
+		ref:'Users'	
+	},
 	createdAt:{
 		type:Date,
 		default:Date.now()

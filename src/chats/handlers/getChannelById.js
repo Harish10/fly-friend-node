@@ -47,8 +47,8 @@ const handler=async (request,reply)=>{
                 })
 	}catch(error){
 		return reply({
-			"status":false,
-			"message":error.message
+			status:false,
+			message:error.message
 		})
 	}
 }

@@ -15,10 +15,9 @@
          // var receiverId="1234243"
          // var token="2432432"
          payload={
-         senderId:"5ec653d5faf25e116461c7c6",
+         senderId:"5ecf5e00ea43662808f2076b",
          message : $('#m').val(),
-         receiverId:"5ec653b1faf25e116461c7c4",
-         token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
+         receiverId:"5ecf5cd3ea43662808f2076a",
          }
          if(payload.message != '') {
          socket.emit('chatMessage', payload);
@@ -48,7 +47,6 @@
          // socket.on('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
          var payload={
          id:"5ec653d5faf25e116461c7c6",
-         token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
          }
          socket.emit('online',payload);
          
@@ -56,18 +54,16 @@
          //User ofline
          var payload={
          userId:"5ec653d5faf25e116461c7c6",
-         token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzY1M2Q1ZmFmMjVlMTE2NDYxYzdjNiIsImNyZWF0ZWRBdCI6MTU5MDA1NTk2OTg4MiwiaWF0IjoxNTkwMDU1OTY5LCJleHAiOjIwMjIwNTU5Njl9.GyVKV-zOEehTwCYJm3AAeo2jhrXAnze0J6L1jUX4OBw"
          }
          socket.emit('ofline',payload);
          
-         //create Channel
+         // //create Channel
          // var payload={
          // userId:"5ec63ac1d49d4f48f827f814",
          // title:"New group",
          // isNew:true,
          // message:"Hello i have created new channel.",
          // members:["5ec653b1faf25e116461c7c4"],
-         // token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
          // }
          // socket.emit('create_channel',payload);
          
@@ -79,13 +75,12 @@
          
          
          // //send message to the channel via socket.
-         var payload1={
-         channelId:"5ecb526deafc172e5092aad4",
-         message:"Hello Everyone.",
-         userId:"5ec63ac1d49d4f48f827f814",
-         token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzYzYWMxZDQ5ZDRmNDhmODI3ZjgxNCIsImNyZWF0ZWRBdCI6MTU5MDA0OTY0MDgyOCwiaWF0IjoxNTkwMDQ5NjQwLCJleHAiOjIwMjIwNDk2NDB9.LtgiCO6Noh56Kms37mJ0Yml8fxrjZSRbK_kOLiBLAGE"
-         }
-         socket.emit('create_message',payload1);
+         // var payload1={
+         // channelId:"5ecb526deafc172e5092aad4",
+         // message:"Hello Everyone.",
+         // userId:"5ec63ac1d49d4f48f827f814",
+         // }
+         // socket.emit('create_message',payload1);
          
       </script>
       <style>

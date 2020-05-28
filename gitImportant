@@ -1,0 +1,13 @@
+git clone https://github.com/Harish10/fly-friends-node.git
+
+b) cd fly-friends-node
+if already exist:
+git pull origin development
+else:
+c) git checkout -b "development"
+d) git push origin development
+
+
+https://github.com/Harish10/fly-friends-node
+Harish10/fly-friends-node
+https://github.com

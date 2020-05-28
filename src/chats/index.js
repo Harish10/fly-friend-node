@@ -1,4 +1,5 @@
-//import getChatHistory from './handlers/getChatHandler';
+import getChatHistory from './handlers/getChatHistory';
+import getSingleChat from './handlers/getSingleChat';
 import socketcheck from './handlers/socketcheck';
 import getChannelById from './handlers/getChannelById';
 import getUserSearch from './handlers/getUserSearch';
@@ -22,16 +23,16 @@ exports.register = (server, options, next) => {
 
         socket.on('chatMessage', async function(payload) {
             const userId = payload.senderId
-            const token = payload.token
+            // const token = payload.token
             var data = await Users.findOne({
                 _id: userId
             })
             if (!data) {
                 console.log("Please check your userId1.")
             }
-            if (data.token != token) {
-                console.log("Token is invalid.")
-            }
+            // if (data.token != token) {
+            //     console.log("Token is invalid.")
+            // }
             var chatObj = await new Chats(payload);
             var data = await chatObj.save();
             var message = payload.message
@@ -77,7 +78,7 @@ exports.register = (server, options, next) => {
         //ONLINE STATUS CHANGE
         socket.on('online', async function(payload) {
             const userId = payload.id
-            const token = payload.token
+            // const token = payload.token
             connection.push(userId);
             var data = await Users.findOne({
                 _id: userId
@@ -85,9 +86,9 @@ exports.register = (server, options, next) => {
             if (!data) {
                 console.log("Please check your userId2.")
             }
-            if (data.token != token) {
-                console.log("Token is invalid.")
-            }
+            // if (data.token != token) {
+            //     console.log("Token is invalid.")
+            // }
             await Users.findOneAndUpdate({
                 _id: userId
             }, {
@@ -102,16 +103,16 @@ exports.register = (server, options, next) => {
         socket.on('ofline', async function(payload) {
 
             const userId = payload.userId
-            const token = payload.token
+            // const token = payload.token
             var data = await Users.findOne({
                 _id: userId
             })
             if (!data) {
                 console.log("Please check your userId3.")
             }
-            if (data.token != token) {
-                console.log("Token is invalid.")
-            }
+            // if (data.token != token) {
+            //     console.log("Token is invalid.")
+            // }
             var lastOnlineTime = Date.now()
             await Users.findOneAndUpdate({
                 _id: userId
@@ -135,16 +136,16 @@ exports.register = (server, options, next) => {
             const userId = payload.userId
             console.log(socket.id);
             var socketId = socket.id
-            const token = payload.token
+            // const token = payload.token
             var data = await Users.findOne({
                 _id: userId
             })
             if (!data) {
                 console.log("Please check your userId4.")
             }
-            if (data.token != token) {
-                console.log("Token is invalid.")
-            }
+            // if (data.token != token) {
+            //     console.log("Token is invalid.")
+            // }
             // var members=[];
             // _.each(_.get(payload,'members',[]),(key)=>{
             //     members.push(key);
@@ -233,11 +234,12 @@ exports.register = (server, options, next) => {
                 }
             }
         });
+            //CREATE NEW MESSAGE 
         socket.on('create_message', async (payload) => {
             // console.log(payload);
             const userId = payload.userId
             // console.log(socket.id);
-            const token = payload.token
+            // const token = payload.token
             var data = await Users.findOne({
                 _id: userId
             })
@@ -321,6 +323,8 @@ exports.register = (server, options, next) => {
             }
         });
     });
+    getSingleChat(server,options);
+    getChatHistory(server,options);
     getUserSearch(server, options);
     getMessagesByChId(server, options);
     getChannelById(server, options);

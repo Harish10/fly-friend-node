@@ -11,7 +11,7 @@ var defaults={};
 
 const handler=async (request,reply)=>{
 try{
-reply.file('D:/balram/projects/linkites/fly-friends-node/src/index.html');
+reply.file('D:/balram/projects/linkites/fly-friends-node-old/src/index.html');
 }catch(error){
 	reply({status:false,message:error.message})
 }
