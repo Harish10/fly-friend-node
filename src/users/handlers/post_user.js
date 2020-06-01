@@ -23,7 +23,7 @@ const handler = async (request, reply) => {
 			const token = Helpers.createJwt(newUser);
 			return reply({
 				status: true,
-				message: 'User Created Successfully',
+				message: 'User created successfully',
 				data: token
 			})
 		} else {
@@ -62,6 +62,6 @@ const routeConfig = {
 }
 
 export default (server, opts) => {
-    defaults = Hoek.applyToDefaults(defaults, opts)
-    server.route(routeConfig)
+  defaults = Hoek.applyToDefaults(defaults, opts)
+  server.route(routeConfig)
 }
