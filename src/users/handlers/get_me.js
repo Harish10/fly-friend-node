@@ -2,7 +2,6 @@ import Hoek from 'hoek'
 
 import Helpers from '../../helpers'
 import Users from '../../models/users'
-import Location from '../../models/savedlocations'
 
 let defaults = {}
 /*
@@ -14,7 +13,6 @@ const handler = async (request, reply) => {
     const user = await Users.findOne({
       _id: id
     }).lean()
-    user.locations = await Location.find({ userId: id })
     return reply({
       status: true,
       message: 'user fetched successfully',

@@ -150,5 +150,6 @@ export default {
     sessionrefresh,
     isPasswordCorrect,
     hashPassword,
-    matchPassword
+    matchPassword,
+    generateSalt
 }
