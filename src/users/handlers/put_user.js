@@ -14,13 +14,6 @@ const handler = async (request, reply) => {
   let payload = request.payload
   try {
     const userId = await Helpers.extractUserId(request)
-    // if (_.get(payload, 'image', '') !== '' && await Helpers.checkBase64(payload.image)) {
-    //   let originalBlobArray = payload.image.split(',')
-    //   var buf = new Buffer(originalBlobArray[1], 'base64')
-    //   const imageUrl = await awsServices.uploadImage(payload.imageName, buf, 'user')
-    //   delete payload.image
-    //   payload.image = imageUrl
-    // }
     const user = await Users.findOneAndUpdate({
       _id: userId
     }, {
