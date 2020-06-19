@@ -10,7 +10,6 @@ import resetUser from './handlers/reset_user'
 // import deleteUser from './handlers/delete_user'
 // import updateUserByAdmin from './handlers/put_user_by_admin'
 // import updatePropertyManager from './handlers/put_property_manager'
-
 exports.register = (server, options, next) => {
     createUser(server, options);
     loginUser(server, options);

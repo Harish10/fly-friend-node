@@ -51,13 +51,18 @@ const manifest = {
       }
     },
     {
+      plugin: {
+        register: './socket'
+      }
+    },
+    {
       plugin: "./users"
     },
     {
       plugin:"./posts"      
     },
     {
-    plugin:"./chats"
+      plugin:"./chats"
     }
   ]
 }
