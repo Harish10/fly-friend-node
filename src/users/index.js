@@ -6,7 +6,7 @@ import notifyUsers from './handlers/notify_user'
 import getMe from './handlers/get_me'
 import forgotUser from './handlers/forgot_user'
 import resetUser from './handlers/reset_user'
-// import updateUser from './handlers/put_user'
+import updateUser from './handlers/put_user'
 // import deleteUser from './handlers/delete_user'
 // import updateUserByAdmin from './handlers/put_user_by_admin'
 // import updatePropertyManager from './handlers/put_property_manager'
@@ -19,7 +19,7 @@ exports.register = (server, options, next) => {
     forgotUser(server, options);
     resetUser(server, options);
     // getCounts(server, options)
-    // updateUser(server, options)
+    updateUser(server, options)
     // deleteUser(server, options)
     // updateUserByAdmin(server, options)
     // updatePropertyManager(server, options)
