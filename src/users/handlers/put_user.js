@@ -37,7 +37,7 @@ const handler = async (request, reply) => {
 
 const routeConfig = {
   method: 'POST',
-  path: '/user',
+  path: '/user/update',
   config: {
     auth: 'jwt',
     tags: ['api', 'users'],
