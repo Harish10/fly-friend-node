@@ -36,7 +36,7 @@ const handler = async (request, reply) => {
 }
 
 const routeConfig = {
-  method: 'PUT',
+  method: 'POST',
   path: '/user',
   config: {
     auth: 'jwt',
