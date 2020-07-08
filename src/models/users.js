@@ -128,7 +128,7 @@ const UserSchema = new Schema(
     },
 
     // Profile Details
-    holdingNumber: { type: Number, default: false },
+    holdingNumber: { type: String, default: '' },
     hasSsnOrItin: { type: Boolean, default: false },
     SsnOrItinNumber: { type: Number, default: 0 },
     SsnOrItinNumber: { type: Number, default: 0 },
