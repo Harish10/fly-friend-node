@@ -135,7 +135,16 @@ const UserSchema = new Schema(
     zip: { type: Number, default: 0 },
     profileImage: { type: String, default: '' },
     coverImage: { type: String, default: '' },
-    workDetails: { type: Array, default: [] },
+    workDetails: { type: [{
+      companyName: { type: String, default: '' },
+      position: { type: String, default: '' },
+      city: { type: String, default: '' },
+      description: { type: String, default: '' },
+      currentlyWorkCheck: { type: Boolean, default: true },
+      fromDate: {type: Date, default: Date.now },
+      toDate: {type: Date, default: Date.now },
+      privacy: { type: String, default: '' }
+    }], default: [] },
     // Work Details Object
     // {
     //     'title': String,
@@ -144,7 +153,16 @@ const UserSchema = new Schema(
     //     location
     // }
 
-    collegeDetails: { type: Array, default: [] },
+    collegeDetails: { type: [{
+      collegeName : { type: String, default: '' },
+      courseName : { type: String, default: '' },
+      degreeName : { type: String, default: '' },
+      description : { type: String, default: '' },
+      graduated : { type: Boolean, default: true },
+      fromDate : {type: Date, default: Date.now },
+      toDate : {type: Date, default: Date.now },
+      privacy : { type: String, default: '' }
+    }], default: [] },
     // College Details Object
     // {
     //     'title': String,
@@ -153,7 +171,14 @@ const UserSchema = new Schema(
     //     location
     // }
 
-    schoolDetails: { type: Array, default: [] },
+    schoolDetails: { type: [{
+      schoolName: { type: String, default: '' },
+       graduated: { type: Boolean, default: true },
+       description: { type: String, default: '' },
+       fromDate: {type: Date, default: Date.now },
+       toDate: {type: Date, default: Date.now },
+       privacy: { type: String, default: '' }
+    }], default: [] },
     // School Details Object
     // {
     //     'title': String,
@@ -163,7 +188,17 @@ const UserSchema = new Schema(
     // }
 
     about: { type: String, default: '' },
-    favouriteQuotes: { type: Array, default: [] },
+    
+    favouriteQuotes: { type: [{
+      title: { type: String, default: '' },
+      privacy: { type: String, default: '' }
+    }], default: [] },
+
+    activities: { type: [{
+      title: { type: String, default: '' },
+      description: { type: String, default: '' },
+      image: { type: String, default: '' },
+    }], default: [] },
   },
   {
     timestamps: {

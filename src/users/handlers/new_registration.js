@@ -12,19 +12,29 @@ let defaults = {}
 
 const handler = async (request, reply) => {
   let payload = request.payload
+  let ssnOrItinNo = 0
+  if(payload.value === 1 || payload.value === true){
+    ssnOrItinNo = payload.ssn
+  }
   const updateData = {
-    hasSsnOrItin: payload.value === '1' ? true : false,             
-    SsnOrItinNumber: payload.ssn,             
+    hasSsnOrItin: payload.value === 1 ? true : false,             
+    SsnOrItinNumber: ssnOrItinNo,             
     zip: payload.zipCode,         
+    about: payload.aboutUser,         
     holdingNumber: payload.holdingNo,       
     userImage: payload.profilePhoto,  
     coverImage: payload.coverPhoto,    
     aboutUser: '',       
     countryCode: payload.country_code,  
-    phone: payload.phone,  
+    phone: payload.phone, 
+    profileImage: payload.profilePhoto,
+    coverImage: payload.coverPhoto,
+    workDetails: payload.workDetails,
+    collegeDetails: payload.collegeDetails,
+    schoolDetails: payload.schoolDetails,
+    activities: payload.activities,
+    favouriteQuotes: payload.favouriteQuotes,
 }
-console.log('updateData', updateData)
-console.log('holdingNumber',typeof updateData.holdingNumber)
 try {
     const userId = await Helpers.extractUserId(request)
     console.log('fdsfdf', userId)
