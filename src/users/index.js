@@ -8,6 +8,8 @@ import forgotUser from './handlers/forgot_user'
 import resetUser from './handlers/reset_user'
 import updateUser from './handlers/put_user'
 import newRegistration from './handlers/new_registration'
+import updateUserDetail from './handlers/update_user_details'
+import deleteUserDetail from './handlers/delete_user_detail'
 // import deleteUser from './handlers/delete_user'
 // import updateUserByAdmin from './handlers/put_user_by_admin'
 // import updatePropertyManager from './handlers/put_property_manager'
@@ -22,6 +24,8 @@ exports.register = (server, options, next) => {
     // getCounts(server, options)
     updateUser(server, options)
     newRegistration(server, options)
+    updateUserDetail(server, options)
+    deleteUserDetail(server, options)
     // deleteUser(server, options)
     // updateUserByAdmin(server, options)
     // updatePropertyManager(server, options)
