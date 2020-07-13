@@ -21,8 +21,26 @@ try {
                         { _id: userId,  }, 
                         { $pull: { 'workDetails': {_id: payload.id} }},
                     )
-    }else if(payload.type === 'college_edit'){
-
+    }else if(payload.type === 'college_delete'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId,  }, 
+                        { $pull: { 'collegeDetails': {_id: payload.id} }},
+                    )
+    }else if(payload.type === 'school_delete'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId,  }, 
+                        { $pull: { 'schoolDetails': {_id: payload.id} }},
+                    )
+    }else if(payload.type === 'activity_delete'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId,  }, 
+                        { $pull: { 'activities': {_id: payload.id} }},
+                    )
+    }else if(payload.type === 'fav_delete'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId,  }, 
+                        { $pull: { 'favouriteQuotes': {_id: payload.id} }},
+                    )
     }
     return reply({
       status: true,

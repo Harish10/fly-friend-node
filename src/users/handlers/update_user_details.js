@@ -21,7 +21,25 @@ try {
                     { $set: {  'workDetails.$.companyName': payload.companyName, 'workDetails.$.position': payload.position, 'workDetails.$.city': payload.city, 'workDetails.$.description': payload.description, 'workDetails.$.currentlyWorkCheck': payload.currentlyWorkCheck, 'workDetails.$.fromDate': payload.fromDate, 'workDetails.$.toDate': payload.toDate, 'workDetails.$.privacy': payload.privacy } }
                   )
     }else if(payload.type === 'college_edit'){
-
+      user = await Users.findOneAndUpdate(
+                    { _id: userId, 'collegeDetails._id': payload.id }, 
+                    { $set: {  'collegeDetails.$.collegeName': payload.collegeName, 'collegeDetails.$.courseName': payload.courseName, 'collegeDetails.$.degreeName': payload.degreeName, 'collegeDetails.$.description': payload.description, 'collegeDetails.$.graduated': payload.graduated, 'collegeDetails.$.fromDate': payload.fromDate, 'collegeDetails.$.toDate': payload.toDate, 'collegeDetails.$.privacy': payload.privacy } }
+                  )
+    }else if(payload.type === 'school_edit'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId, 'schoolDetails._id': payload.id }, 
+                        { $set: {  'schoolDetails.$.schoolName': payload.schoolName, 'schoolDetails.$.description': payload.description, 'schoolDetails.$.graduated': payload.graduated, 'schoolDetails.$.fromDate': payload.fromDate, 'schoolDetails.$.toDate': payload.toDate, 'schoolDetails.$.privacy': payload.privacy } }
+                      )
+    }else if(payload.type === 'activity_edit'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId, 'activities._id': payload.id }, 
+                        { $set: {  'activities.$.title': payload.activityTitle, 'activities.$.description': payload.description, 'activities.$.image': payload.activityImage } }
+                      )
+    }else if(payload.type === 'fav_edit'){
+      user = await Users.findOneAndUpdate(
+                        { _id: userId, 'favouriteQuotes._id': payload.id }, 
+                        { $set: {  'favouriteQuotes.$.title': payload.favTitle, 'favouriteQuotes.$.privacy': payload.privacy } }
+                      )
     }
     return reply({
       status: true,
