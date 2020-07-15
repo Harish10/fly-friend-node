@@ -21,6 +21,11 @@ const handler = async (request, reply) => {
     SsnOrItinNumber: ssnOrItinNo,             
     zip: payload.zipCode,         
     about: payload.aboutUser,         
+    city: payload.city,
+    dob: payload.dob,
+    currentCity: payload.currentCity,
+    address: payload.address,
+    gender: payload.gender,
     holdingNumber: payload.holdingNo,       
     userImage: payload.profilePhoto,  
     coverImage: payload.coverPhoto,    
@@ -33,7 +38,7 @@ const handler = async (request, reply) => {
     collegeDetails: payload.collegeDetails,
     schoolDetails: payload.schoolDetails,
     activities: payload.activities,
-    favouriteQuotes: payload.favouriteQuotes,
+    favouriteQuotes: payload.favouriteQuotes
 }
 try {
     const userId = await Helpers.extractUserId(request)

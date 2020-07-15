@@ -72,6 +72,18 @@ const UserSchema = new Schema(
       type: String,
       default: '',
     },
+    currentCity: {
+      type: String,
+      default: '',
+    },
+    gender: { 
+      type: String, 
+      default: '' 
+    },
+    dob: {
+      type: Date,
+      default: '',
+    },
     state: {
       type: String,
       default: '',
