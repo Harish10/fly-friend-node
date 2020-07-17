@@ -24,7 +24,8 @@ const handler = async (request, reply) => {
 				return reply({
 					status: true,
 					message: "Login successfully",
-					data: token
+					data: token,
+					userData: user ? user : {}
 				}) 
 			} else {
 				return reply({

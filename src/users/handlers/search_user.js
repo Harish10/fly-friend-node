@@ -5,15 +5,25 @@ import Users from '../../models/users'
 
 let defaults = {}
 /*
- * Here is the api for get record based on object id
+ * Here is the api for get search records
  **/
 const handler = async (request, reply) => {
   const payload = request.payload
   try {
-    // const id = await Helpers.extractUserId(request)
-    const user = await Users.findOne({
-      _id: payload
-    }).lean()
+    // const user = await Users.findOne({
+    //   _id: Object(payload) 
+    // }).lean()
+
+    const user = await Users.find({
+        "$expr": {
+          "$regexMatch": {
+            "input": { "$concat": ["$firstName", " ", "$lastName"] },
+            "regex": payload,  //Your text search here
+            "options": "i"
+          }
+        }
+      })
+
     return reply({
       status: true,
       message: 'user fetched successfully',
@@ -30,11 +40,11 @@ const handler = async (request, reply) => {
 
 const routeConfig = {
   method: 'POST',
-  path: '/get_user_by_id',
+  path: '/search_users',
   config: {
     auth: 'jwt',
-    tags: ['api', 'me'],
-    description: 'Returns a user object based on JWT along with a new token.',
+    tags: ['api', 'sarch'],
+    description: 'Returns a search object',
     notes: [],
     handler
   }
