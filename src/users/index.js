@@ -11,6 +11,7 @@ import newRegistration from './handlers/new_registration'
 import updateUserDetail from './handlers/update_user_details'
 import deleteUserDetail from './handlers/delete_user_detail'
 import updateUserPrivacy from './handlers/update_user_privacy'
+import getUserById from './handlers/get_user_by_id'
 // import deleteUser from './handlers/delete_user'
 // import updateUserByAdmin from './handlers/put_user_by_admin'
 // import updatePropertyManager from './handlers/put_property_manager'
@@ -28,6 +29,7 @@ exports.register = (server, options, next) => {
     updateUserDetail(server, options)
     deleteUserDetail(server, options)
     updateUserPrivacy(server, options)
+    getUserById(server, options)
     // deleteUser(server, options)
     // updateUserByAdmin(server, options)
     // updatePropertyManager(server, options)
