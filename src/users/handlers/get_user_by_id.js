@@ -8,11 +8,11 @@ let defaults = {}
  * Here is the api for get record based on object id
  **/
 const handler = async (request, reply) => {
-  console.log('payload==> ', request.payload)
+  const payload = request.payload
   try {
-    const id = await Helpers.extractUserId(request)
+    // const id = await Helpers.extractUserId(request)
     const user = await Users.findOne({
-      _id: id
+      _id: Object(payload) 
     }).lean()
     return reply({
       status: true,
