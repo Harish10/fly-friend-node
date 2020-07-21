@@ -19,6 +19,7 @@ exports.register = (server, options, next) => {
     var socket;
     var connection = [];
     io.on('connection', function(socket) {
+        console.log("Socket is On")
         //ONE TO ONE CHAT , ONLINE , OFLINE AND LASTONLINE TIME
 
         socket.on('chatMessage', async function(payload) {
