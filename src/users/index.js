@@ -13,6 +13,7 @@ import deleteUserDetail from './handlers/delete_user_detail'
 import updateUserPrivacy from './handlers/update_user_privacy'
 import getUserById from './handlers/get_user_by_id'
 import searchUser from './handlers/search_user'
+import addFriendRequest from './handlers/add_friend'
 // import deleteUser from './handlers/delete_user'
 // import updateUserByAdmin from './handlers/put_user_by_admin'
 // import updatePropertyManager from './handlers/put_property_manager'
@@ -32,6 +33,7 @@ exports.register = (server, options, next) => {
     updateUserPrivacy(server, options)
     getUserById(server, options)
     searchUser(server, options)
+    addFriendRequest(server, options)
     // deleteUser(server, options)
     // updateUserByAdmin(server, options)
     // updatePropertyManager(server, options)

@@ -2,6 +2,8 @@ import Hoek from 'hoek'
 
 import Helpers from '../../helpers'
 import Users from '../../models/users'
+import Friend from '../../models/friends'
+import mongoose from 'mongoose';
 
 let defaults = {}
 /*
@@ -10,16 +12,39 @@ let defaults = {}
 const handler = async (request, reply) => {
   const payload = request.payload
   try {
-    // const id = await Helpers.extractUserId(request)
-    const user = await Users.findOne({
-      _id: payload
-    }).lean()
+    const id = await Helpers.extractUserId(request)
+
+    // const user = await Users.findOne({
+    //   _id: payload
+    // }).lean()
+
+    const user = await Users.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(payload) }},
+      { "$lookup": {
+        "from": Friend.collection.name,
+        "pipeline": [
+          { "$match": {
+            "recipient": mongoose.Types.ObjectId(payload),
+            "requester": mongoose.Types.ObjectId(id)
+          }},
+          { "$project": { "status": 1 } }
+        ],
+        "as": "friends"
+      }},
+      { "$addFields": {
+        "friendsStatus": {
+          "$ifNull": [ { "$min": "$friends.status" }, 0 ]
+        }
+      }}
+    ])
+
     return reply({
       status: true,
       message: 'user fetched successfully',
-      data: user ? user : {}
+      data: user[0] ? user[0] : {}
     })
   } catch (error) {
+    console.log('errr', error)
     return reply({
       status: false,
       message: error.message,
