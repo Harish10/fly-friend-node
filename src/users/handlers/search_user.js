@@ -26,7 +26,7 @@ const handler = async (request, reply) => {
 
     return reply({
       status: true,
-      message: 'user fetched successfully',
+      message: 'user search successfully',
       data: user ? user : {}
     })
   } catch (error) {
