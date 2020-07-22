@@ -3,6 +3,7 @@ import Hoek from 'hoek'
 import Helpers from '../../helpers'
 import Users from '../../models/users'
 import Friend from '../../models/friends'
+import FollowFriends from '../../models/followers'
 import mongoose from 'mongoose';
 
 let defaults = {}
@@ -31,11 +32,17 @@ const handler = async (request, reply) => {
         ],
         "as": "friends"
       }},
-      { "$addFields": {
-        "friendsStatus": {
-          "$ifNull": [ { "$min": "$friends.status" }, 0 ]
-        }
-      }}
+      { "$lookup": {
+        "from": FollowFriends.collection.name,
+        "pipeline": [
+          { "$match": {
+            "recipient": mongoose.Types.ObjectId(payload),
+            "requester": mongoose.Types.ObjectId(id)
+          }},
+          { "$project": { "status": 1 } }
+        ],
+        "as": "followers"
+      }},
     ])
 
     return reply({
@@ -44,7 +51,6 @@ const handler = async (request, reply) => {
       data: user[0] ? user[0] : {}
     })
   } catch (error) {
-    console.log('errr', error)
     return reply({
       status: false,
       message: error.message,

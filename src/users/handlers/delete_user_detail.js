@@ -12,7 +12,6 @@ let defaults = {}
 
 const handler = async (request, reply) => {
   let payload = request.payload
-  console.log('payyy', payload)
 try {
     const userId = await Helpers.extractUserId(request)
     let user = []
