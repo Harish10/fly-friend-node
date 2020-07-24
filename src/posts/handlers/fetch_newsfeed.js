@@ -36,7 +36,6 @@ const handler = async (request, reply) => {
         let setp = p.reactions.map(async (r) => {
           let reaction = await LikePost.findOne({ _id: r }).populate('userId').lean();
           reaction.by = `${get(reaction, 'userId.firstName')} ${get(reaction, 'userId.lastName')}`
-          console.log("asdasdasdasd", reactions)
           reactions.push(reaction);
         });
 

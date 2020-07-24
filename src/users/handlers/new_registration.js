@@ -42,7 +42,6 @@ const handler = async (request, reply) => {
 }
 try {
     const userId = await Helpers.extractUserId(request)
-    console.log('fdsfdf', userId)
     const user = await Users.findOneAndUpdate({
       _id: userId
     }, {
