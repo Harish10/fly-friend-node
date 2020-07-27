@@ -20,12 +20,13 @@ const handler = async (request, reply) => {
 			payload.password = Helpers.hashPassword(payload.password);
 			const newUser = new Users(payload)
 			await newUser.save();
-			const token = Helpers.createJwt(newUser);
-			return reply({
-				status: true,
-				message: 'User created successfully',
-				data: token
-			})
+      const token = Helpers.createJwt(newUser);
+      return reply({
+        status: true,
+        message: 'User created successfully',
+        data: token,
+        userData: newUser ? newUser : {}
+      })
 		} else {
 			return reply({
 				status: false,
@@ -54,7 +55,8 @@ const routeConfig = {
         email: Joi.string().required(),
         password: Joi.string().required(),
 				phone: Joi.string().required(),
-				role: Joi.string().required()    
+				role: Joi.string().required(), 
+				countryCode: Joi.string().required() 
       }
     },
     handler
