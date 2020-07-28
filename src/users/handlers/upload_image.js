@@ -1,10 +1,9 @@
 import Hoek from 'hoek'
 import Joi from 'joi'
 import _ from 'lodash'
-
-import AWS from 'aws-sdk'
-// import config from '../../config'
 import fileType from 'file-type'
+import AWS from 'aws-sdk'
+// import aws_config from '../../config'
 
 AWS.config.update({
   accessKeyId:  process.env.AWS_KEY_ID,
@@ -25,10 +24,9 @@ const handler = async (request, reply) => {
   try {
     
     if ( requestData['image'] != "null" ){
-      // console.log('payllllllll', requestData)
       const type = fileType(requestData['image'])
       const timestamp = Date.now().toString()
-      const file_name = `profileImages/${timestamp}`
+      const file_name = `images/${timestamp}`
       if ( type.ext == "png" || type.ext == "jpg" || type.ext == "jpeg" ){
         const params = {
           ACL: 'public-read',
@@ -36,9 +34,8 @@ const handler = async (request, reply) => {
           Bucket: process.env.BUCKET_NAME,
           ContentType: type.mime,
           timestamp : Date.now().toString(),
-          Key: file_name + "/" + type.ext
+          Key: file_name + "." + type.ext
         }
-        console.log('parrr', params)
         s3.upload(params, function(err, data){
           const response_data = { status: true, message: "File uploaded succecssfully", image_url: data.Location }
           reply(response_data)               
@@ -53,7 +50,6 @@ const handler = async (request, reply) => {
       reply(response_data)                    
     }
   } catch (error) {
-    console.log('//////////errorr///// ', error)
     return reply({ status: false, message: error.message, data: {} })
   }
 }
