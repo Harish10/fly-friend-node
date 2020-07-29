@@ -66,6 +66,9 @@ const manifest = {
     },
     {
       plugin:"./followers"
+    },
+    {
+      plugin:"./friends"
     }
   ]
 }
