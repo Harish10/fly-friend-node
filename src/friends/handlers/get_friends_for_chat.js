@@ -20,7 +20,7 @@ const handler = async (request, reply) => {
                                 let: { recipient :"$recipient"},
                                 "pipeline": [
                                     { $match: { $expr: { $eq: ["$$recipient", "$_id"] }}},
-                                    { $project: { firstName: 1, lastName: 1, profileImage: 1 }}
+                                    { $project: { firstName: 1, lastName: 1, profileImage: 1, "full_name":     {$concat: ['$firstName', ' ', '$lastName']} }}
                                 ],
                                 "as": "users"
                             }},
