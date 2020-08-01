@@ -38,23 +38,56 @@ const handler = async (request, reply) => {
         }
         let userObjid = ObjectID(userId);
         let otherUserObjid = ObjectID(otherUserId);
-        const query = {
+        // const query = {
+        //     $or: [{
+        //         $and: [{
+        //             senderId: userObjid
+        //         }, {
+        //             receiverId: otherUserObjid
+        //         }]
+        //     }, {
+        //         $and: [{
+        //             senderId: otherUserObjid
+        //         }, {
+        //             receiverId: userObjid
+        //         }]
+        //     }]
+        // }
+        // const chatData = await Chat.find(query);
+        const chatData = await Chat.aggregate([
+          {$match: {
             $or: [{
-                $and: [{
-                    senderId: userObjid
-                }, {
-                    receiverId: otherUserObjid
-                }]
-            }, {
-                $and: [{
-                    senderId: otherUserObjid
-                }, {
-                    receiverId: userObjid
-                }]
+              $and: [{
+                senderId: userObjid
+              }, {
+                receiverId: otherUserObjid
+              }]
+              }, {
+              $and: [{
+                senderId: otherUserObjid
+              }, {
+                receiverId: userObjid
+              }]
             }]
-        }
-        const chatData = await Chat.find(query);
-        console.log(chatData);
+          }},
+          { "$lookup": {
+            "from": Users.collection.name,
+            "let": { "senderId": "$senderId" },
+            "pipeline": [
+              { "$match": { "$expr": { "$eq": [ "$_id", "$$senderId" ] } } },
+              { "$project": { "firstName": 1, "lastName": 1, "profileImage": 1 }}
+            ],
+            "as": "sender"
+          }},{ "$lookup": {
+            "from": Users.collection.name,
+            "let": { "receiverId": "$receiverId" },
+            "pipeline": [
+              { "$match": { "$expr": { "$eq": [ "$_id", "$$receiverId" ] } } },
+              { "$project": { "firstName": 1, "lastName": 1, "profileImage": 1 }}
+            ],
+            "as": "receiver"
+          }}])
+
         return reply({
             status: true,
             message: "Get my chats.",
