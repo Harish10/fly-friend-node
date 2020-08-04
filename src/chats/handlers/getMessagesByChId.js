@@ -15,10 +15,11 @@ Api to get all messages by channel id.
 var defaults = {};
 
 const handler = async (request, reply) => {
+  let payload = request.payload;
     try {
-        const userId = request.query.userId;
-        const token = request.query.token;
-        const channelId = request.query.channelId;
+        const userId = payload.userId
+        const token = payload.token
+        const channelId = payload.channelId
         var data = await Users.findOne({
             _id: userId
         })
@@ -36,8 +37,8 @@ const handler = async (request, reply) => {
         //         message: "Token is invalid."
         //     })
         // }
-        const limit = _.get(request, 'query.limit', 1);
-        const offset = _.get(request, 'query.offset', 1);
+        const limit = _.get(payload.request, 'query.limit', 1);
+        const offset = _.get(payload.request, 'query.offset', 1);
         var objId = ObjectID(channelId);
         var channelData = await Channels.findOne({
             _id: objId
@@ -45,7 +46,7 @@ const handler = async (request, reply) => {
         const memberIds = _.get(channelData, 'members');
         const members = [];
         _.each(memberIds, (id) => {
-            members.push(_.toString(id));
+          members.push(_.toString(id));
         })
         if (!_.includes(members, _.toString(userId))) {
             return reply({
@@ -77,29 +78,31 @@ const handler = async (request, reply) => {
                         _id: true,
                         firstName: true,
                         lastName: true,
+                        profileImage: true,
                         isOnline: true,
                         lastOnlineTime: true
                     },
                     userId: true,
                     body: true,
+                    type: true,
                     createdAt: true
                 }
             },
-            {
-                $facet: {
-                    data: [{
-                            $skip: offset
-                        },
-                        {
-                            $limit: parseInt(limit)
-                        }
-                    ]
-                }
-            },
+            // {
+            //     $facet: {
+            //         data: [{
+            //                 $skip: offset
+            //             },
+            //             {
+            //                 $limit: parseInt(limit)
+            //             }
+            //         ]
+            //     }
+            // },
 
             {
                 $sort: {
-                    createdAt: -1
+                    createdAt: 1
                 }
             }
         ]
@@ -137,17 +140,21 @@ const queryshcema = Joi.object({
 });
 
 const routeConfig = {
-    method: 'GET',
+    method: 'POST',
     path: '/getMessagesByChId',
     config: {
         tags: ['api', 'gets'],
         description: 'Get all messages by channel id.',
         notes: ['On success'],
         validate: {
-            // payload: {
-
-            //    },
-            query: queryshcema
+            payload: {
+              userId: Joi.string().required(),
+              token: Joi.string().required(),
+              channelId: Joi.string().required(),
+              limit: Joi.number().optional(),
+              offset: Joi.number().optional(),
+            },
+            // query: queryshcema
         },
         handler
     }

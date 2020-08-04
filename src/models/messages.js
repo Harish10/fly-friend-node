@@ -13,6 +13,10 @@ var MessageSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:'Channels'
 	},
+	type:{
+		type:String,
+		default:''
+	},
 	user:{
 	type:Schema.Types.ObjectId,
 		ref:'Users'	
