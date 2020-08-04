@@ -247,15 +247,17 @@ exports.register = (server, options, next) => {
             if (!data) {
                 console.log("Please check your userId4.")
             }
-            if (data.token != token) {
-                console.log("Token is invalid.")
-            }
+            // if (data.token != token) {
+            //     console.log("Token is invalid.")
+            // }
             var channelId = payload.channelId;
             var body = payload.message;
+            var type = payload.type
             var payloadMessage = {
                 channelId: channelId,
                 userId: userId,
-                body: body
+                body: body,
+                type: type
             }
             var messageObj = await new Messages(payloadMessage);
             var result = await messageObj.save();
@@ -286,41 +288,90 @@ exports.register = (server, options, next) => {
                 channelObject.users = user
                 //fetch all users  has memberId
                 var members = channelObject.members
+
+                //this is query for get message using channel id
                 const query = {
-                    _id: {
-                        $in: members
+                        _id: {
+                            $in: members
+                        }
                     }
-                }
-                const options = {
-                    _id: 1,
-                    firstName: 1,
-                    lastName: 1
-                }
-                var userData = await Users.find(query, options);
-                channelObject.members = userData;
-
-                const messageArray = await Messages.find({
-                    channelId: channelId
-                });
-
-                channelObject.messages = messageArray
-                _.each(members, (id) => {
-                    // var user_id=id;
-                    // var memberConnection=connection.filter((con)=>con === user_id && con !== userId);
-                    //     if(memberConnection.size){
-                    //         memberConnection.forEach((con)=>{
-                    //             //send to socket  client matching  userId in channel members
-                    //             socket.emit('message',channelObject); 
-
-                    //         console.log('success');
-                    //         })
-                    //     }
-                    if (id != userId) {
-                        socket.emit('message', channelObject);
-                        // count1++;
+                    const options = {
+                        _id: 1,
+                        firstName: 1,
+                        lastName: 1
                     }
-                    console.log("success");
-                })
+                    var userData = await Users.find(query, options);
+                    channelObject.members = userData;
+
+                    const query2 = [{
+                        $lookup: {
+                            from: 'users',
+                            localField: 'userId',
+                            foreignField: '_id',
+                            as: 'user'
+                        }
+                    },
+                    {
+                        $match: {
+                            channelId: {
+                                $eq: ObjectID(channelId)
+                            }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: true,
+                            channelId: true,
+                            user: {
+                                _id: true,
+                                firstName: true,
+                                lastName: true,
+                                profileImage: true,
+                                isOnline: true,
+                                lastOnlineTime: true
+                            },
+                            userId: true,
+                            body: true,
+                            type: true,
+                            createdAt: true
+                        }
+                    },
+                    {
+                        $sort: {
+                            createdAt: 1
+                        }
+                    }
+                ]
+
+                // const messageArray = await Messages.find({
+                //     channelId: channelId
+                // });
+                var channelMessageData = await Messages.aggregate(query2);
+                if (channelMessageData.length > 0) {
+                    // socket.emit('create_message', channelMessageData);
+                    io.emit('create_message', channelMessageData);
+                    // count1++;
+                  console.log("success");
+                }
+
+                // channelObject.messages = messageArray
+                // _.each(members, (id) => {
+                //     // var user_id=id;
+                //     // var memberConnection=connection.filter((con)=>con === user_id && con !== userId);
+                //     //     if(memberConnection.size){
+                //     //         memberConnection.forEach((con)=>{
+                //     //             //send to socket  client matching  userId in channel members
+                //     //             socket.emit('message',channelObject); 
+
+                //     //         console.log('success');
+                //     //         })
+                //     //     }
+                //     if (id != userId) {
+                //         socket.emit('create_message', channelObject);
+                //         // count1++;
+                //     }
+                //     console.log("success");
+                // })
             }
         });
     });

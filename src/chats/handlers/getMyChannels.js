@@ -37,7 +37,6 @@ const handler = async (request, reply) => {
         //     })
         // }
         var Objid = ObjectID(userId);
-        console.log(Objid);
         const query = [{
                 $lookup: {
                     from: 'users',
