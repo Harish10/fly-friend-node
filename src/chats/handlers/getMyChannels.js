@@ -17,8 +17,8 @@ const handler = async (request, reply) => {
     try {
 
         let payload = request.payload;
-        const userId = _.get(request, 'payload.userId', '');
-        const token = _.get(request, 'payload.token', '');
+        const userId = payload.userId
+        const token = payload.token
         var data = await Users.findOne({
             _id: userId
         })
@@ -29,13 +29,13 @@ const handler = async (request, reply) => {
                 message: "Please check your UserId!"
             })
         }
-        if (data.token != token) {
-            return reply({
-                status: false,
-                status_msg: "error",
-                message: "Token is invalid."
-            })
-        }
+        // if (data.token != token) {
+        //     return reply({
+        //         status: false,
+        //         status_msg: "error",
+        //         message: "Token is invalid."
+        //     })
+        // }
         var Objid = ObjectID(userId);
         console.log(Objid);
         const query = [{
