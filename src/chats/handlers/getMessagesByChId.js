@@ -29,13 +29,13 @@ const handler = async (request, reply) => {
                 message: "Please check your UserId!"
             })
         }
-        if (data.token != token) {
-            return reply({
-                status: false,
-                status_msg: "error",
-                message: "Token is invalid."
-            })
-        }
+        // if (data.token != token) {
+        //     return reply({
+        //         status: false,
+        //         status_msg: "error",
+        //         message: "Token is invalid."
+        //     })
+        // }
         const limit = _.get(request, 'query.limit', 1);
         const offset = _.get(request, 'query.offset', 1);
         var objId = ObjectID(channelId);
