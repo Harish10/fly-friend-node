@@ -21,15 +21,15 @@ var MessageSchema=new Schema({
 	type:Schema.Types.ObjectId,
 		ref:'Users'	
 	},
-	createdAt: {
-        type: Date,
-        default: Date.now
-    },
+	// createdAt: {
+    //     type: Date,
+    //     default: Date.now
+    // },
     updatedAt: {
         type: Date,
         default: Date.now
     }
-});
+},  { timestamps: true });
 
 var message="Messages";
 export default Mongoose.model(message,MessageSchema);

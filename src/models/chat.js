@@ -25,15 +25,15 @@ const ChatSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:'Users'	
 	},
-	createdAt:{
-		type:Date,
-		default:Date.now()
-	},
+	// createdAt:{
+	// 	type:Date,
+	// 	default:Date.now()
+	// },
 	updatedAt:{
 		type:Date,
 		default:Date.now()
 	}
-});
+}, { timestamps: true });
 
 const chat="Chats"
 export default Mongoose.model(chat,ChatSchema);
