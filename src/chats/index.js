@@ -64,16 +64,39 @@ exports.register = (server, options, next) => {
             })
             if (data) {
                 console.log('success');
-                var data = await Chats.find({
-                    $or: [{
-                        senderId: userId,
-                        receiverId: receiverId
-                    }, {
-                        senderId: receiverId,
-                        receiverId: userId
-                    }]
-                });
-                io.emit('chatMessage', data);
+
+                const chatData = await Chats.aggregate([
+                  {$match: {
+                    _id: data._id
+                  }},
+                  { "$lookup": {
+                    "from": Users.collection.name,
+                    "let": { "senderId": "$senderId" },
+                    "pipeline": [
+                      { "$match": { "$expr": { "$eq": [ "$_id", "$$senderId" ] } } },
+                      { "$project": { "firstName": 1, "lastName": 1, "profileImage": 1 }}
+                    ],
+                    "as": "sender"
+                  }},{ "$lookup": {
+                    "from": Users.collection.name,
+                    "let": { "receiverId": "$receiverId" },
+                    "pipeline": [
+                      { "$match": { "$expr": { "$eq": [ "$_id", "$$receiverId" ] } } },
+                      { "$project": { "firstName": 1, "lastName": 1, "profileImage": 1 }}
+                    ],
+                    "as": "receiver"
+                  }}])
+
+                // var data = await Chats.find({
+                //     $or: [{
+                //         senderId: userId,
+                //         receiverId: receiverId
+                //     }, {
+                //         senderId: receiverId,
+                //         receiverId: userId
+                //     }]
+                // });
+                io.emit('chatMessage', chatData);
             }
         });
         //ONLINE STATUS CHANGE
@@ -101,7 +124,7 @@ exports.register = (server, options, next) => {
             });
         });
         //OFLINE STATUS AND LASTONLIMETIME CHANGE
-        socket.on('ofline', async function(payload) {
+        socket.on('offline', async function(payload) {
 
             const userId = payload.userId
             // const token = payload.token
