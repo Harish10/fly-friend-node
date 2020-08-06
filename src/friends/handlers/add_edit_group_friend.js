@@ -16,7 +16,7 @@ const handler = async (request, reply) => {
     const id = await Helpers.extractUserId(request)
     const user = await Channels.findOneAndUpdate(
                   { _id: channelId }, 
-                  { $set: { 'members': members} }
+                  { $set: payload }
                 )
     return reply({
       status: true,
