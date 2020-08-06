@@ -21,6 +21,10 @@ var ChannelSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:'Users'
 	}],
+	groupImage: { 
+		type: String, 
+		default: '' 
+	},
 	messages:[],
 	createdAt: {
         type: Date,

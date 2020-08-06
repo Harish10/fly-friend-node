@@ -58,6 +58,7 @@ const handler = async (request, reply) => {
                     _id: true,
                     title: true,
                     userId: true,
+                    groupImage: true,
                     createdAt: true,
                     updatedAt: true,
                     lastMessage: true,
@@ -67,6 +68,7 @@ const handler = async (request, reply) => {
                         firstName: true,
                         lastName: true,
                         isOnline: true,
+                        profileImage: true,
                         lastOnlineTime: true
                     }
                 }

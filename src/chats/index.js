@@ -180,7 +180,8 @@ exports.register = (server, options, next) => {
             var payload = {
                 userId: userId,
                 title: title,
-                lastMessage: message
+                lastMessage: message,
+                groupImage: ''
             }
             const createChannel = await new Channels(payload);
             var data = await createChannel.save();

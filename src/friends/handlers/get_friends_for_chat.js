@@ -14,26 +14,6 @@ const handler = async (request, reply) => {
   const payload = request.payload
   try {
       const id = await Helpers.extractUserId(request)
-      // const user = await Friend.aggregate([
-      //                   { $match: { requester: mongoose.Types.ObjectId(id), status: 3 }},
-      //                       { "$lookup": {
-      //                           "from": Users.collection.name,
-      //                           let: { recipient :"$recipient"},
-      //                           "pipeline": [
-      //                               { $match: { $expr: { $eq: ["$$recipient", "$_id"] }}},
-      //                               { $project: { firstName: 1, lastName: 1, profileImage: 1, isOnline: 1, "full_name":     {$concat: ['$firstName', ' ', '$lastName']} }}
-      //                           ],
-      //                           "as": "users"
-      //                       }},
-      //                       { "$unwind": "$users" },
-      //                       {
-      //                         "$replaceRoot": {
-      //                         "newRoot": "$users"
-      //                         }
-      //                       },
-      //                   ])
-
-
       const user = await Friend.aggregate([
        { $match: { requester: mongoose.Types.ObjectId(id), status: 3 } },
         {
