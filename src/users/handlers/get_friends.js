@@ -15,13 +15,13 @@ const handler = async (request, reply) => {
       const id = await Helpers.extractUserId(request)
 
       const user = await Friend.aggregate([
-                        { $match: { requester: mongoose.Types.ObjectId(payload.requester), status: 3 }},
+                        { $match: { requester: mongoose.Types.ObjectId(payload.requester) }},
                             { "$lookup": {
                                 "from": Users.collection.name,
                                 let: { recipient :"$recipient"},
                                 "pipeline": [
                                     { $match: { $expr: { $eq: ["$$recipient", "$_id"] }}},
-                                    { $project: { firstName: 1, lastName: 1, profileImage: 1 }}
+                                    { $project: { firstName: 1, lastName: 1, profileImage: 1, coverImage: 1, email: 1 }}
                                 ],
                                 "as": "users"
                             }}
