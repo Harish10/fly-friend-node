@@ -21,30 +21,31 @@ const handler = async (request, reply) => {
   try {
     const token = await Helpers.extractUserId(request);
     // let posts = await Posts.find({ userId: token })
-    let posts = await Posts.find({ })
-      .populate('userId')
-      .populate('images')
-      .populate('comments')
-      .lean();
-
-      console.log(posts)
-
+    let posts = await Posts.find({}).limit(Number(request.query.limit)).populate('userId').lean();
+      
+      // .skip(request.query.limit - 5)
+      
 
     if (!isEmpty(posts)) {
       let setReactions = posts.map(async (p, i) => {
         let reactions = [];
         let setp = p.reactions.map(async (r) => {
-          let reaction = await LikePost.findOne({ _id: r }).populate('userId').lean();
-          reaction.by = `${get(reaction, 'userId.firstName')} ${get(reaction, 'userId.lastName')}`
+          let reaction = await LikePost.findOne({ _id: r })
+            .populate('userId')
+            .lean();
+          reaction.by = `${get(reaction, 'userId.firstName')} ${get(
+            reaction,
+            'userId.lastName'
+          )}`;
           reactions.push(reaction);
         });
 
-        await Promise.all(setp)
+        await Promise.all(setp);
 
-        p.reactions = reactions
+        p.reactions = reactions;
       });
 
-      await Promise.all(setReactions)
+      await Promise.all(setReactions);
     }
 
     return reply({
