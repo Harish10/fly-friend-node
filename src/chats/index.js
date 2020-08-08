@@ -5,6 +5,7 @@ import getChannelById from './handlers/getChannelById';
 import getUserSearch from './handlers/getUserSearch';
 import getMyChannels from './handlers/getMyChannels';
 import getMessagesByChId from './handlers/getMessagesByChId';
+import getAllChatUsers from './handlers/getAllChatUsers';
 import {
     ObjectID
 } from 'mongodb';
@@ -406,6 +407,7 @@ exports.register = (server, options, next) => {
     getChannelById(server, options);
     getMyChannels(server, options);
     socketcheck(server, options);
+    getAllChatUsers(server, options);
     next();
 }
 
