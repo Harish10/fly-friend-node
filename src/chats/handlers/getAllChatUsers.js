@@ -5,6 +5,7 @@ import Users from '../../models/users'
 import Friend from '../../models/friends'
 import mongoose from 'mongoose';
 import Chat from '../../models/chat';
+import _ from 'lodash'
 
 let defaults = {}
 /*
@@ -66,6 +67,7 @@ const handler = async (request, reply) => {
         { $unwind: "$users" },
         { $addFields: { "users.lastMessage": { $arrayElemAt:["$lastMessage.message", 0] }}},
         { $addFields: { "users.lastMessageDate": { $arrayElemAt:["$lastMessage.createdAt", 0] }}},
+        { $addFields: { "users.messageType": { $arrayElemAt:["$messageType.type", 0] }}},
         {
           $replaceRoot: {
             newRoot: "$users",
@@ -73,10 +75,26 @@ const handler = async (request, reply) => {
         },
       ]);
     
+    //when last message date key availabel so push first one
+    let orderList = []
+    user && user.map((data, i)=>{
+      if(data.lastMessageDate){
+        orderList.push(data)
+      }
+    })
+
+    orderList = _.orderBy(orderList, ['lastMessageDate'],['desc'])
+
+    user && user.map((data, i)=>{
+      if(!data.lastMessageDate){
+        orderList.push(data)
+      }
+    })
+
     return reply({
       status: true,
       message: 'Get chat friends...',
-      data: user ? user : {}
+      data: orderList ? orderList : {}
     })
   } catch (error) {
     return reply({
