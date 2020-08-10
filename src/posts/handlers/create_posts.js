@@ -16,6 +16,7 @@ import path from 'path';
 Api to create new post
 **/
 
+
 var defaults = {};
 const handler = async (request, reply) => {
   try {
