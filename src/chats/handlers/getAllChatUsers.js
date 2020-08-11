@@ -58,6 +58,9 @@ const handler = async (request, reply) => {
                   profileImage: 1,
                   isOnline: 1,
                   full_name: { $concat: ["$firstName", " ", "$lastName"] },
+                  currentCity: 1,
+                  city: 1,
+                  workDetails: 1
                 },
               },
             ],
