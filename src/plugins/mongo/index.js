@@ -24,6 +24,7 @@ exports.register = (server, options, next) => {
     server.log(`${process.env.NOED_ENV} server connecting to ${defaults.url}`)
     Mongoose.set('useFindAndModify', false)
     Mongoose.set('useCreateIndex', true)
+    Mongoose.set('useUnifiedTopology', true)
     const options = {
       promiseLibrary: Bluebird,
       useNewUrlParser: true
