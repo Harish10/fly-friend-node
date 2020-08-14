@@ -17,6 +17,10 @@ var MessageSchema=new Schema({
 		type:String,
 		default:''
 	},
+	emoji:{
+		type:String,
+		default:''
+	},
 	user:{
 	type:Schema.Types.ObjectId,
 		ref:'Users'	
