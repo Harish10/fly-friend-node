@@ -6,6 +6,7 @@ import getUserSearch from './handlers/getUserSearch';
 import getMyChannels from './handlers/getMyChannels';
 import getMessagesByChId from './handlers/getMessagesByChId';
 import getAllChatUsers from './handlers/getAllChatUsers';
+import editSingleChat from './handlers/editSingleChat';
 import {
     ObjectID
 } from 'mongodb';
@@ -282,7 +283,8 @@ exports.register = (server, options, next) => {
                 channelId: channelId,
                 userId: userId,
                 body: body,
-                type: type
+                type: type,
+                emoji: ''
             }
             var messageObj = await new Messages(payloadMessage);
             var result = await messageObj.save();
@@ -408,9 +410,9 @@ exports.register = (server, options, next) => {
     getMyChannels(server, options);
     socketcheck(server, options);
     getAllChatUsers(server, options);
+    editSingleChat(server, options);
     next();
 }
-
 
 exports.register.attributes = {
     name: "chat"
