@@ -21,7 +21,8 @@ const handler = async (request, reply) => {
         // var payload=request.payload;
         // var projectId=payload.projectId;
         // console.log(projectId);
-        var projectData=await Project.find({}).populate('comments').populate('donors');
+        var projectData=await Project.find({}).populate('comments');
+        // var projectData=await Project.find({}).populate('comments').populate('donors');
         // console.log(projectData);
         if(projectData.length>0){
         return reply({
