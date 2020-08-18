@@ -18,10 +18,11 @@ const handler = async (request, reply) => {
       _id: userId
       });
       if(user){
-        var payload=request.payload;
-        var projectId=payload.projectId;
+        // var payload=request.payload;
+        // var projectId=payload.projectId;
         // console.log(projectId);
-        var projectData=await Project.find({}).populate('comments').populate('donors');
+        var projectData=await Project.find({}).populate('comments');
+        // var projectData=await Project.find({}).populate('comments').populate('donors');
         // console.log(projectData);
         if(projectData.length>0){
         return reply({
@@ -53,11 +54,6 @@ const routeConfig = {
     tags: ['api', 'users'],
     description: 'Delete FlyFriends project.',
     notes: ['On success'],
-    validate: {
-      payload: {
-        projectId:Joi.string().required()
-        }
-    },
     handler
   }
 }
