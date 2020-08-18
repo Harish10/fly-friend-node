@@ -10,7 +10,7 @@ var CommentProjectSchema = new Schema({
         ref: "Users",
         type: Schema.Types.ObjectId
     },
-    postId: {
+    projectId: {
         ref: "Projects",
         type: Schema.Types.ObjectId
     },

@@ -20,18 +20,18 @@ const handler = async (request, reply) => {
       if(user){
         var payload=request.payload;
         var projectId=payload.projectId;
-        console.log(projectId);
+        // console.log(projectId);
         var projectData=await Project.findOne({_id:projectId}).populate('comments').populate('donors');
-        console.log(projectData);
+        // console.log(projectData);
         if(projectData){
-        var favouriteData=await ProjectFavourites.find({projectId:projectId});
-        if(favouriteData){
-          projectData.favourites=favouriteData;
-        }
-        var isFavourite=await ProjectFavourites.findOne({$and:[{userId:userId},{projectId:projectId}]});
-        if(isFavourite){
-          projectData.isFavourite=isFavourite.isFavourite;
-        }
+        // var favouriteData=await ProjectFavourites.find({projectId:projectId});
+        // if(favouriteData){
+        //   projectData.favourites=favouriteData;
+        // }
+        // var isFavourite=await ProjectFavourites.findOne({$and:[{userId:userId},{projectId:projectId}]});
+        // if(isFavourite){
+        //   projectData.isFavourite=isFavourite.isFavourite;
+        // }
         return reply({
           status: true,
           message: "Get Project Details...",
