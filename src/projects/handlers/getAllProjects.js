@@ -47,12 +47,12 @@ const handler = async (request, reply) => {
 }
 
 const routeConfig = {
-  method: 'POST',
+  method: 'GET',
   path: '/user/getAllProjects',
   config: {
     auth:'jwt',
     tags: ['api', 'users'],
-    description: 'Delete FlyFriends project.',
+    description: 'Get FlyFriends project.',
     notes: ['On success'],
     handler
   }
