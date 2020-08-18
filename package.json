@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@google/maps": "^1.0.2",
+    "@sendgrid/mail": "^7.2.3",
     "aws-sdk": "^2.582.0",
     "axios": "^0.19.0",
     "babel-cli": "^6.26.0",

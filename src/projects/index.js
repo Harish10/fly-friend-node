@@ -4,6 +4,8 @@ import removeProject from './handlers/removeProject';
 import getProjectDetailById from './handlers/getProjectById';
 import getAllProjects from './handlers/getAllProjects';
 import addProjectComment from './handlers/addProjectComment';
+import editProjectComment from './handlers/editProjectComment';
+import removeProjectComment from './handlers/removeProjectComment';
 
 exports.register = (server, options, next) => {
     addProject(server, options);
@@ -12,6 +14,8 @@ exports.register = (server, options, next) => {
     getProjectDetailById(server,options);
     getAllProjects(server,options);
     addProjectComment(server,options);
+    editProjectComment(server,options);
+    removeProjectComment(server,options);
     next()
 }
 

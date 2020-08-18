@@ -5,7 +5,8 @@ import Helpers from '../../helpers'
 import Project from '../../models/projects'
 import Users from '../../models/users'
 // import ProjectFavourites from '../../models/projectFavourites'
-
+// const EmailService=require('../../services/email_service.js');
+import EmailService from '../../services/email_service.js';
 /** 
 Api to get all projects 
 **/
@@ -21,6 +22,10 @@ const handler = async (request, reply) => {
         // var payload=request.payload;
         // var projectId=payload.projectId;
         // console.log(projectId);
+        await EmailService.sendMail("balramchawda4019@gmail.com",function(data,err){
+          console.log('err',err);
+          console.log('data',data);
+        })
         var projectData=await Project.find({}).populate('comments');
         // var projectData=await Project.find({}).populate('comments').populate('donors');
         // console.log(projectData);
