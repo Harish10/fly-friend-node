@@ -69,6 +69,9 @@ const manifest = {
     },
     {
       plugin:"./friends"
+    },
+    {
+      plugin:"./projects"
     }
   ]
 }
