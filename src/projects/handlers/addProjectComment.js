@@ -7,7 +7,7 @@ import Users from '../../models/users'
 import Project from '../../models/projects'
 
 /** 
-Api to create project
+Api to create project comment
 **/
 
 let defaults = {}

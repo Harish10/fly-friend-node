@@ -5,8 +5,8 @@
 const sendgrid = {
   apiKey: process.env.SEND_GRID || '',
   hellosenderEmail: '',
-  senderEmail: '',
-  supportEmail: '',
+  senderEmail: 'support@noticeframe.com',
+  supportEmail: 'support@noticeframe.com',
   supportPhone: '',
   templateIds: {
     'CodeVerification': ''

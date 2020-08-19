@@ -5,6 +5,8 @@ import Helpers from '../../helpers'
 import Project from '../../models/projects'
 import Users from '../../models/users'
 // import ProjectFavourites from '../../models/projectFavourites'
+// const EmailService=require('../../services/email_service.js');
+// import EmailService from '../../services/email_service.js';
 
 /** 
 Api to get all projects 
@@ -18,23 +20,27 @@ const handler = async (request, reply) => {
       _id: userId
       });
       if(user){
-        // var payload=request.payload;
-        // var projectId=payload.projectId;
-        // console.log(projectId);
-        var projectData=await Project.find({}).populate('comments');
+        var payload = request.query;
+        var page = request.query.page || 1;
+        var page_size= request.query.page_size ||10;
+        var skip=(page-1)*page_size;
+        var totallength=await Project.find({}).count();
+        var projectData=await Project.find({}).populate('comments').skip(skip).limit(page_size);
         // var projectData=await Project.find({}).populate('comments').populate('donors');
         // console.log(projectData);
         if(projectData.length>0){
         return reply({
           status: true,
           message: "Get All Project...",
-          data:projectData
+          data:projectData,
+          totallength:totallength
         })
         }else{
         return reply({
           status: false,
           message: "No Data Found...",
-          data:[]
+          data:[],
+          totallength:0
         })
         }  
     }
@@ -47,12 +53,12 @@ const handler = async (request, reply) => {
 }
 
 const routeConfig = {
-  method: 'GET',
+  method: 'POST',
   path: '/user/getAllProjects',
   config: {
     auth:'jwt',
     tags: ['api', 'users'],
-    description: 'Get FlyFriends project.',
+    description: 'Get All Projects.',
     notes: ['On success'],
     handler
   }
