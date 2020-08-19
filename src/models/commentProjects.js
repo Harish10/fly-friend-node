@@ -18,6 +18,10 @@ var CommentProjectSchema = new Schema({
         type:String,
         default:''
     },
+    replyComments:[{
+        ref:"ReplyComments",
+        type:Schema.Types.ObjectId
+    }],
     projectId: {
         ref: "Projects",
         type: Schema.Types.ObjectId
