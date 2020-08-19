@@ -51,7 +51,7 @@ const routeConfig = {
   config: {
     auth:'jwt',
     tags: ['api', 'users'],
-    description: 'Create FlyFriends project.',
+    description: 'Create FlyFriend project',
     notes: ['On success'],
     validate: {
       payload: {
