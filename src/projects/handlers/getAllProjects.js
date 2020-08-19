@@ -20,10 +20,15 @@ const handler = async (request, reply) => {
       _id: userId
       });
       if(user){
-        var payload = request.query;
-        var page = request.query.page || 1;
-        var page_size= request.query.page_size ||10;
-        var skip=(page-1)*page_size;
+
+        console.log(request.query.search);
+        var payload = request.query.search;
+        var page = parseInt(request.query.page) || 1;
+        var page_size= parseInt(request.query.page_size) ||10;
+        var skip=parseInt((page-1)*page_size);
+        // console.log(request.query.page)
+        // console.log(request.query.page_size)
+        // console.log(skip);
         var totallength=await Project.find({}).count();
         var projectData=await Project.find({}).populate('comments').skip(skip).limit(page_size);
         // var projectData=await Project.find({}).populate('comments').populate('donors');
@@ -53,7 +58,7 @@ const handler = async (request, reply) => {
 }
 
 const routeConfig = {
-  method: 'POST',
+  method: 'GET',
   path: '/user/getAllProjects',
   config: {
     auth:'jwt',
