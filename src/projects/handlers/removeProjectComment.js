@@ -74,7 +74,7 @@ const routeConfig = {
     validate: {
       payload: {
         commentId:Joi.string().optional(),
-        }
+      }
     },
     handler
   }

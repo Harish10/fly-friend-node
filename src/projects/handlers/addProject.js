@@ -18,13 +18,14 @@ const handler = async (request, reply) => {
       });
       if(user){
         var payload=request.payload;
-        var tags= payload.tags;
-        var tagLength=tags.length;
         // console.log(tagLength);
         var payloadData={
           title:payload.title,
           tags:payload.tags,
+          relatedTags: payload.relatedTags,
           description:payload.description,
+          companyName: payload.companyName,
+          companyDescription: payload.companyDescription,
           projectImage:payload.projectImage,
           userId:userId
         }
@@ -58,8 +59,11 @@ const routeConfig = {
         title: Joi.string().optional(),
         description: Joi.string().optional(),
         tags: Joi.array().optional(),
-        projectImage: Joi.array().optional()
-        }
+        relatedTags: Joi.array().optional(),
+        projectImage: Joi.array().optional(),
+        companyName: Joi.string().optional(),
+        companyDescription: Joi.string().optional(),
+      }
     },
     handler
   }

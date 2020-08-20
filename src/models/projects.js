@@ -12,7 +12,19 @@ const ProjectSchema = new Schema({
         ref: "Users",
         type: Mongoose.Schema.Types.ObjectId
     },
+    companyName:{
+        type:String,
+        default:""
+    },
+    companyDescription:{
+        type:String,
+        default:""
+    },
     tags:{
+        type: Array,
+        default: []
+    },
+    relatedTags:{
         type: Array,
         default: []
     },

@@ -63,7 +63,7 @@ const routeConfig = {
         projectId: Joi.string().optional(),
         name: Joi.string().optional(),
         email: Joi.string().optional()
-        }
+      }
     },
     handler
   }
