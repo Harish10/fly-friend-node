@@ -7,6 +7,7 @@ import addProjectComment from './handlers/addProjectComment';
 import editProjectComment from './handlers/editProjectComment';
 import removeProjectComment from './handlers/removeProjectComment';
 import replyMessageOnComment from './handlers/replyMessageOnComment';
+import getProjectComments from './handlers/getProjectComments'
 
 exports.register = (server, options, next) => {
     addProject(server, options);
@@ -18,6 +19,7 @@ exports.register = (server, options, next) => {
     editProjectComment(server,options);
     removeProjectComment(server,options);
     replyMessageOnComment(server,options);
+    getProjectComments(server,options);
     next()
 }
 
