@@ -3,6 +3,7 @@ import Hoek from 'hoek'
 import Joi from 'joi'
 import Helpers from '../../helpers'
 import Users from '../../models/users'
+import EmailService from '../../services/email_service.js';
 
 /** 
 Api to create new user
@@ -23,8 +24,16 @@ const handler = async (request, reply) => {
       }) 
     } else {
       const resetPasswordToken = Helpers.generateSalt()
-      await Users.findOneAndUpdate({ _id: user._id }, {$set: { resetPasswordToken }})
+      await Users.findOneAndUpdate({ _id: user._id }, {$set: { resetPasswordToken }});
       // email service
+      var body={
+          email:email,
+          // link:`${process.env.WEB_HOST}/updatePassword/`+resetPasswordToken
+          link:`http://localhost:3002/updatePassword/`+resetPasswordToken
+      }
+      await EmailService.sendMail(body,function(err,data){
+        console.log('mail sent');
+      })      
       return reply({
         status: true,
         message: 'Please check your inbox.'
@@ -40,7 +49,7 @@ const handler = async (request, reply) => {
 
 const routeConfig = {
   method: 'POST',
-  path: '/user/forgot',
+  path: '/user/forgotPassword',
   config: {
     tags: ['api', 'users'],
     description: 'Forgot User.',
