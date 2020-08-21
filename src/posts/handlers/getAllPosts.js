@@ -29,7 +29,7 @@ const handler=async (request,reply)=>{
 					message:"Your token is invalid."
 				})
 		}
-		var postData=await Posts.find({userId:userId}).populate('comments').populate('likes').populate('images');
+		var postData=await Posts.find({userId:userId}).populate('comments').populate('likes').populate('images').sort({createdAt:-1});
 			if(postData){
 					if(postData.length>0){
 						var postData=JSON.parse(JSON.stringify(postData));

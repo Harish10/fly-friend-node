@@ -4,13 +4,13 @@ import Joi from 'joi'
 import Helpers from '../../helpers'
 import Project from '../../models/projects'
 import Users from '../../models/users'
-import Comments from '../../models/commentProjects';
+import Activity from '../../models/activities';
 // import ProjectFavourites from '../../models/projectFavourites'
 // const EmailService=require('../../services/email_service.js');
 // import EmailService from '../../services/email_service.js';
 
 /** 
-Api to get all projects 
+Api to get all activities 
 **/
 
 let defaults = {}
@@ -21,19 +21,19 @@ const handler = async (request, reply) => {
       _id: userId
       });
       if(user){
-        // console.log(request.query.search);
         var payload = request.query.search;
         var page = parseInt(request.query.page) || 1;
         var page_size= parseInt(request.query.page_size) ||10;
         var skip=parseInt((page-1)*page_size);
-        var totallength=await Project.find({}).count();
-        var ProjectData=await Project.find({}).populate('comments').skip(skip).limit(page_size);
-        
-        if(ProjectData.length>0){
+        var totallength=await Activity.find({}).count();
+        var activityData=await Activity.find({}).skip(skip).limit(page_size);
+        var recentData=await Activity.find({}).sort({createdAt:-1}).limit(3);
+        if(activityData.length>0){
           return reply({
             status: true,
-            message: "Get All Project...",
-            data:ProjectData,
+            message: "Get All Activities...",
+            data:activityData,
+            recentActivity:recentData,
             totallength:totallength
           })
         }else{
@@ -41,6 +41,7 @@ const handler = async (request, reply) => {
           status: false,
           message: "No Data Found...",
           data:[],
+          recentActivity:recentData,
           totallength:0
         })
         }  
@@ -55,11 +56,11 @@ const handler = async (request, reply) => {
 
 const routeConfig = {
   method: 'GET',
-  path: '/user/getAllProjects',
+  path: '/user/getAllActivities',
   config: {
     auth:'jwt',
     tags: ['api', 'users'],
-    description: 'Get All Projects.',
+    description: 'Get All Activities.',
     notes: ['On success'],
     handler
   }

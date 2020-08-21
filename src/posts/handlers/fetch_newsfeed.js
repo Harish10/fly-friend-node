@@ -21,11 +21,9 @@ const handler = async (request, reply) => {
   try {
     const token = await Helpers.extractUserId(request);
     // let posts = await Posts.find({ userId: token })
-    let posts = await Posts.find({}).limit(Number(request.query.limit)).populate('userId').lean();
+    let posts = await Posts.find({}).limit(Number(request.query.limit)).populate('userId').populate('comments').lean().sort({createdAt:-1});
       
       // .skip(request.query.limit - 5)
-      
-
     if (!isEmpty(posts)) {
       let setReactions = posts.map(async (p, i) => {
         let reactions = [];

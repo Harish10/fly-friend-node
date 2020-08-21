@@ -22,6 +22,7 @@ const handler = async (request, reply) => {
   try {
 	let payload = request.payload;
 	const token = await Helpers.extractUserId(request);
+  // console.log(payload);
 	payload.userId = token
 	await Posts.create(payload);
     return reply({

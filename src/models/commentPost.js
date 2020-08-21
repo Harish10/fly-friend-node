@@ -6,8 +6,6 @@ var CommentPostSchema = new Schema({
         type: String,
         default:''
     },
-    // user_id:{type:String,max:255},
-    // post_id:{type:String,max:255},
     userId: {
         ref: "Users",
         type: Schema.Types.ObjectId
