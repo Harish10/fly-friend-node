@@ -20,6 +20,14 @@ const ActivitySchema = new Schema({
         type: Array,
         default: []
     },
+    companyName:{
+        type:String,
+        default:''
+    },
+    companyDescription:{
+        type:String,
+        default:''
+    },
     description:{
         type:String,
         default:''
