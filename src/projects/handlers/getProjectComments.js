@@ -3,6 +3,7 @@ import Hoek from 'hoek'
 import Joi from 'joi'
 import Helpers from '../../helpers'
 import CommentProjects from '../../models/commentProjects'
+import ReplyComments from '../../models/replyCommentMessage'
 import Users from '../../models/users'
 import mongoose from 'mongoose';
 
@@ -36,7 +37,34 @@ const handler = async (request, reply) => {
              ],
              as: "users",
            },
-         }
+         },
+         {
+          $lookup: {
+            from: ReplyComments.collection.name,
+            let: { replyComments: "$replyComments" },
+            pipeline: [
+              { $match: { $expr: { $in: ["$_id", "$$replyComments"] } } },
+              {
+                "$lookup": {
+                  "from": Users.collection.name,
+                  "let": { "userId": "$userId" },
+                  "pipeline": [
+                    { "$match": { "$expr": { "$eq": ["$_id", "$$userId"] } } },
+                    {
+                      $project: {
+                        profileImage: 1,
+                        firstName: 1,
+                        lastName: 1
+                      },
+                    },
+                  ],
+                  "as": "users"
+                }
+              }
+            ],
+            as: "replies",
+          },
+        },
        ]);
       if(projectComments) {
         return reply({
