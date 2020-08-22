@@ -21,7 +21,12 @@ const handler = async (request, reply) => {
   try {
     const token = await Helpers.extractUserId(request);
     // let posts = await Posts.find({ userId: token })
-    let posts = await Posts.find({}).limit(Number(request.query.limit)).populate('userId').populate('comments').lean().sort({createdAt:-1});
+    let linkHref = req.query.href
+    let findObj = {}
+    if(linkHref.includes('profile')) {
+      findObj = { userId: ObjectID(token) }
+    }
+    let posts = await Posts.find(findObj).limit(Number(request.query.limit)).populate('userId').populate('comments').lean().sort({createdAt:-1});
       
       // .skip(request.query.limit - 5)
     if (!isEmpty(posts)) {
