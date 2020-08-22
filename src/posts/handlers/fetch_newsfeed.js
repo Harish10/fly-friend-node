@@ -21,7 +21,7 @@ const handler = async (request, reply) => {
   try {
     const token = await Helpers.extractUserId(request);
     // let posts = await Posts.find({ userId: token })
-    let linkHref = req.query.href
+    let linkHref = request.query.href
     let findObj = {}
     if(linkHref.includes('profile')) {
       findObj = { userId: ObjectID(token) }
