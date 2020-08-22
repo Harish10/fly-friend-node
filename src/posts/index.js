@@ -4,6 +4,7 @@ import getSinglePostInfo from './handlers/getSinglePostInfo';
 import commentOnPost from './handlers/commentOnPost';
 import likePost from './handlers/likePost';
 import fetchNewsFeed from './handlers/fetch_newsfeed'
+import getPostComments from './handlers/getPostComments';
 
 exports.register = (server, option, next) => {
   createPost(server, option);
@@ -12,6 +13,7 @@ exports.register = (server, option, next) => {
   commentOnPost(server, option);
   likePost(server, option);
   fetchNewsFeed(server, option)
+  getPostComments(server,option)
   next();
 };
 
