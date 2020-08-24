@@ -8,7 +8,6 @@ import getPostComments from './handlers/getPostComments';
 import getAllPostReactions from './handlers/get_all_post_reactions';
 import removePostComment from './handlers/removePostComment';
 import editPostComment from './handlers/editPostComment';
->>>>>>> a501ae4f6f19f4645ab4764a6003d11f527a6c81
 
 exports.register = (server, option, next) => {
   createPost(server, option);
