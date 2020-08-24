@@ -34,7 +34,7 @@ const handler = async (request, reply) => {
           if(postComment[i]==commentId){
 
           }else{
-            postCommentArray.push(projectComment[i]);
+            postCommentArray.push(postComment[i]);
           }
         }
         await Posts.findOneAndUpdate({_id:postId},{$set:{comments:postCommentArray}},{new:true});
