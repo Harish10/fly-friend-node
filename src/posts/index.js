@@ -5,6 +5,7 @@ import commentOnPost from './handlers/commentOnPost';
 import likePost from './handlers/likePost';
 import fetchNewsFeed from './handlers/fetch_newsfeed'
 import getPostComments from './handlers/getPostComments';
+import getAllPostReactions from './handlers/get_all_post_reactions';
 import removePostComment from './handlers/removePostComment';
 import editPostComment from './handlers/editPostComment';
 
@@ -16,6 +17,7 @@ exports.register = (server, option, next) => {
   likePost(server, option);
   fetchNewsFeed(server, option)
   getPostComments(server,option)
+  getAllPostReactions(server,option)
   editPostComment(server,option)
   removePostComment(server,option)
   next();
