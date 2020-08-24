@@ -14,6 +14,10 @@ var CommentPostSchema = new Schema({
         ref: "Posts",
         type: Schema.Types.ObjectId
     },
+    userDetails:{
+        type:Object,
+        default:{}
+    },
     created_at: {
         type: Date,
         default: Date.now
