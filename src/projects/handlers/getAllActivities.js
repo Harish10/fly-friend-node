@@ -45,10 +45,10 @@ const handler = async (request, reply) => {
           },
 
     }},
-     { "$skip":skip},{
-    "$limit":page_size
-   }]);
-        console.log(datas)
+     { "$skip":skip},
+     {"$limit":page_size}
+     ]);
+        // console.log(datas)
         var recentData=await Activity.find({}).sort({createdAt:-1}).limit(3);
         if(activityData.length>0){
           return reply({
@@ -56,7 +56,7 @@ const handler = async (request, reply) => {
             message: "Get All Activities...",
             data:datas,
             recentActivity:recentData,
-            totallength:totallength
+            totallength:datas.length
           })
         }else{
         return reply({
