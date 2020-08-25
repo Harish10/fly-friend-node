@@ -2,7 +2,7 @@ import _ from 'lodash'
 import Hoek from 'hoek'
 import Joi from 'joi'
 import Helpers from '../../helpers'
-import Posts from '../../models/Posts'
+import Posts from '../../models/posts'
 import Users from '../../models/users'
 import LikePost from '../../models/likePost';
 
@@ -71,7 +71,7 @@ const routeConfig = {
       payload: {
         postId:Joi.string().required(),
         likeId:Joi.string().required(),
-        }
+      }
     },
     handler
   }
