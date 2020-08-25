@@ -24,7 +24,7 @@ const handler = async (request, reply) => {
             _id: userId
         });
         if (user) {
-          console.log(userId)
+            console.log(userId)
             var payload = request.query.search;
             var page = parseInt(request.query.page) || 1;
             var page_size = parseInt(request.query.page_size) || 10;
@@ -32,20 +32,18 @@ const handler = async (request, reply) => {
             var totallength = await Activity.find({}).count();
             // var activityData=await Activity.find({}).skip(skip).limit(page_size);
             var activityData = await Activity.find({}).skip(skip).limit(page_size);
-            var datas = await Activity.aggregate([
-            {
-              "$match":{
-                  "userId":ObjectID(userId)
-              }
-            },
-            {       
+            var datas = await Activity.aggregate([{
+                    "$match": {
+                        "userId": ObjectID(userId)
+                    }
+                },
+                {
                     "$sort": {
                         "createdAt": -1
                     }
                 },
                 {
                     "$group": {
-
                         "_id": {
                             "projectId": "$projectId",
                             "userId": "$userId"
@@ -57,6 +55,27 @@ const handler = async (request, reply) => {
                             "$push": "$$ROOT"
                         },
 
+                    }
+                },
+                {
+                    "$unwind": "$project"
+                },
+                // { "$match": { "orders": { "$ne": false } } },
+                {
+                    "$sort": {
+                        "project[0].createdAt": -1
+                    }
+                },
+
+                {
+                    "$group": {
+                        "_id": "$_id",
+                        "projectCount": {
+                            "$sum": 1
+                        },
+                        "project": {
+                            "$push": "$project"
+                        },
                     }
                 },
                 {
