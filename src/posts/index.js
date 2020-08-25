@@ -8,6 +8,8 @@ import getPostComments from './handlers/getPostComments';
 import getAllPostReactions from './handlers/get_all_post_reactions';
 import removePostComment from './handlers/removePostComment';
 import editPostComment from './handlers/editPostComment';
+import editPost from './handlers/edit_post';
+import deletePost from './handlers/delete_post';
 import disLike from './handlers/disLikePost';
 
 exports.register = (server, option, next) => {
@@ -16,6 +18,8 @@ exports.register = (server, option, next) => {
   getSinglePostInfo(server, option);
   commentOnPost(server, option);
   likePost(server, option);
+  editPost(server, option);
+  deletePost(server, option);
   fetchNewsFeed(server, option)
   getPostComments(server,option)
   getAllPostReactions(server,option)
