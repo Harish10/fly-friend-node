@@ -8,6 +8,7 @@ import getPostComments from './handlers/getPostComments';
 import getAllPostReactions from './handlers/get_all_post_reactions';
 import removePostComment from './handlers/removePostComment';
 import editPostComment from './handlers/editPostComment';
+import disLike from './handlers/disLikePost';
 
 exports.register = (server, option, next) => {
   createPost(server, option);
@@ -20,6 +21,7 @@ exports.register = (server, option, next) => {
   getAllPostReactions(server,option)
   editPostComment(server,option)
   removePostComment(server,option)
+  disLike(server,option)
   next();
 };
 
