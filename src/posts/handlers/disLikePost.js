@@ -71,7 +71,7 @@ const routeConfig = {
       payload: {
         postId:Joi.string().required(),
         likeId:Joi.string().required(),
-        }
+      }
     },
     handler
   }
