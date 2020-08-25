@@ -25,9 +25,6 @@ exports.register = (server, option, next) => {
   next();
 };
 
-// exports.posts.attributes={
-// 	name:'posts'
-// }
 
 exports.register.attributes = {
   name: 'posts',

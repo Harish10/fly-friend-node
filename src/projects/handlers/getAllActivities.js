@@ -8,6 +8,9 @@ import Activity from '../../models/activities';
 // import ProjectFavourites from '../../models/projectFavourites'
 // const EmailService=require('../../services/email_service.js');
 // import EmailService from '../../services/email_service.js';
+import {
+  ObjectID
+} from 'mongodb';
 
 /** 
 Api to get all activities 
@@ -26,13 +29,32 @@ const handler = async (request, reply) => {
         var page_size= parseInt(request.query.page_size) ||10;
         var skip=parseInt((page-1)*page_size);
         var totallength=await Activity.find({}).count();
+        // var activityData=await Activity.find({}).skip(skip).limit(page_size);
         var activityData=await Activity.find({}).skip(skip).limit(page_size);
+        var datas=  await Activity.aggregate([
+             {"$sort": { "createdAt": -1 }},
+    { "$group": {
+
+        "_id": {
+            "projectId": "$projectId",
+            "userId": "$userId"
+        },
+        "projectCount": { "$sum":1 },
+        "project": { 
+            "$push":"$$ROOT"
+          },
+
+    }},
+     { "$skip":skip},{
+    "$limit":page_size
+   }]);
+        console.log(datas)
         var recentData=await Activity.find({}).sort({createdAt:-1}).limit(3);
         if(activityData.length>0){
           return reply({
             status: true,
             message: "Get All Activities...",
-            data:activityData,
+            data:datas,
             recentActivity:recentData,
             totallength:totallength
           })

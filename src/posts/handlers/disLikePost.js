@@ -2,7 +2,7 @@ import _ from 'lodash'
 import Hoek from 'hoek'
 import Joi from 'joi'
 import Helpers from '../../helpers'
-import Posts from '../../models/posts'
+import PostData from '../../models/posts'
 import Users from '../../models/users'
 import LikePost from '../../models/likePost';
 
@@ -26,7 +26,7 @@ const handler = async (request, reply) => {
         var postCommentData=await LikePost.findOneAndRemove({_id:likeId});
         if(postCommentData){
         // console.log(projectCommentData);
-        var postData=await Posts.findOne({_id:postId});
+        var postData=await PostData.findOne({_id:postId});
         if(postData){
           var reactionsArray=[];
           var reactions=postData.reactions;
@@ -37,7 +37,7 @@ const handler = async (request, reply) => {
               reactionsArray.push(reactions[i]);
             }
           }
-          await Posts.findOneAndUpdate({_id:postId},{$set:{reactions:reactionsArray}},{new:true});
+          await PostData.findOneAndUpdate({_id:postId},{$set:{reactions:reactionsArray}},{new:true});
           // console.log(project);
         return reply({
           status: true,
