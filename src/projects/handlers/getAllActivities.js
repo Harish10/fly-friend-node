@@ -35,7 +35,7 @@ const handler = async (request, reply) => {
             var datas = await Activity.aggregate([
             {
               "$match":{
-                  "userId":userId
+                  "userId":ObjectID(userId)
               }
             },
             {       
