@@ -29,7 +29,7 @@ const handler = async (request, reply) => {
       var body={
           email:email,
           // link:`${process.env.WEB_HOST}/updatePassword/`+resetPasswordToken
-          link:`http://localhost:3002/updatePassword/`+resetPasswordToken
+          link:`http://localhost:3000/reset/`+resetPasswordToken
       }
       await EmailService.sendMail(body,function(err,data){
         console.log('mail sent');
