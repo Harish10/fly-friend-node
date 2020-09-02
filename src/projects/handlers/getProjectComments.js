@@ -32,6 +32,7 @@ const handler = async (request, reply) => {
                {
                  $project: {
                    profileImage: 1,
+                   firstName: 1
                  },
                },
              ],
