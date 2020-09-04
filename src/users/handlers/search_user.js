@@ -1,5 +1,5 @@
 import Hoek from 'hoek'
-
+import Joi from 'joi'
 import Helpers from '../../helpers'
 import Users from '../../models/users'
 
@@ -9,6 +9,7 @@ let defaults = {}
  **/
 const handler = async (request, reply) => {
   const payload = request.payload
+  console.log(payload.search);
   try {
     // const user = await Users.findOne({
     //   _id: Object(payload) 
@@ -18,12 +19,12 @@ const handler = async (request, reply) => {
         "$expr": {
           "$regexMatch": {
             "input": { "$concat": ["$firstName", " ", "$lastName"] },
-            "regex": payload,  //Your text search here
+            "regex": payload.search,  //Your text search here
             "options": "i"
           }
         }
       })
-
+// const user = await Users.find({ "firstName": { "$regex": payload, "$options": "i" } })
     return reply({
       status: true,
       message: 'user search successfully',
@@ -46,6 +47,11 @@ const routeConfig = {
     tags: ['api', 'sarch'],
     description: 'Returns a search object',
     notes: [],
+    validate:{
+      payload:{
+        search:Joi.string().optional()
+      }
+    },
     handler
   }
 }
