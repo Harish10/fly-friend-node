@@ -22,7 +22,7 @@ let defaults = {}
 const handler = async (request, reply) => {
   let requestData = request.payload
   try {
-    
+      console.log(requestData);
     if ( requestData['image'] != "null" ){
       const type = fileType(requestData['image'])
       const timestamp = Date.now().toString()
@@ -37,6 +37,7 @@ const handler = async (request, reply) => {
           Key: file_name + "." + type.ext
         }
         s3.upload(params, function(err, data){
+          console.log(data)
           const response_data = { status: true, message: "File uploaded succecssfully", image_url: data.Location }
           reply(response_data)               
         })

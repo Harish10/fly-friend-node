@@ -32,58 +32,57 @@ const handler = async (request, reply) => {
             var totallength = await Activity.find({}).count();
             // var activityData=await Activity.find({}).skip(skip).limit(page_size);
             var activityData = await Activity.find({}).skip(skip).limit(page_size);
-            var datas = await Activity.aggregate([{
-                    "$match": {
-                        "userId": ObjectID(userId)
+            var datas = await Activity.aggregate([
+            // {
+            //         $match: {
+            //             userId: ObjectID(userId)
+            //         }
+            //     },
+                // {
+                //     $sort: {
+                //         createdAt: -1
+                //     }
+                // },
+                {
+                    $group: {
+                        _id: {
+                            projectId: "$projectId"
+                        },
+                        projectCount: {
+                            $sum: 1
+                        },
+                        // project: {
+                        //   $push: "$$ROOT"
+                        // },
                     }
                 },
-                {
-                    "$sort": {
-                        "createdAt": -1
-                    }
-                },
-                {
-                    "$group": {
-                        "_id": {
-                            "projectId": "$projectId",
-                            "userId": "$userId"
-                        },
-                        "projectCount": {
-                            "$sum": 1
-                        },
-                        "project": {
-                            "$push": "$$ROOT"
-                        },
-
-                    }
-                },
-                {
-                    "$unwind": "$project"
-                },
+                // {
+                //     $unwind: "$project"
+                // },
                 // { "$match": { "orders": { "$ne": false } } },
-                {
-                    "$sort": {
-                        "project[0].createdAt": -1
-                    }
-                },
+                // {
+                //     $sort: {
+                //         // project[0].createdAt: -1
+                //     }
+                // },
 
-                {
-                    "$group": {
-                        "_id": "$_id",
-                        "projectCount": {
-                            "$sum": 1
-                        },
-                        "project": {
-                            "$push": "$project"
-                        },
-                    }
-                },
-                {
-                    "$skip": skip
-                },
-                {
-                    "$limit": page_size
-                }
+                // {
+                //     $group: {
+                //         _id: "$_id",
+                //         projectCount: {
+                //             $sum: 1
+                //         },
+                //         project: {
+                //             $push: "$project"
+                //         },
+                //     }
+                // },
+                // {
+                //     $skip: skip
+                // },
+                // {
+                //     $limit: page_size
+                // }
             ]);
             // console.log(datas)
             var recentData = await Activity.find({}).sort({

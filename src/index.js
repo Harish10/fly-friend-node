@@ -27,6 +27,7 @@ composer((err, server) => {
   if (err) throw err
   server.initialize((errInit) => {
     if (err) throw errInit
+    
     const register = (hapiRaven, options, next) => {
       return next()
     }

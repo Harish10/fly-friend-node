@@ -138,7 +138,10 @@ const UserSchema = new Schema(
       type: Date,
       required: false,
     },
-
+    videoCallId:{
+      type:String,
+      default:""
+    },
     // Profile Details
     holdingNumber: { type: String, default: '' },
     hasSsnOrItin: { type: Boolean, default: false },

@@ -15,16 +15,63 @@ import Users from '../models/users';
 import Messages from '../models/messages';
 import Channels from '../models/channels';
 import _ from 'lodash';
+const {Howl,Howler}=require("howler");
 exports.register = (server, options, next) => {
     //connection with socket.
     var io = require('socket.io')(server.listener);
     var socket;
     var connection = [];
+    const rooms={};
     io.on('connection', function(socket) {
-        console.log("Socket is On")
-        //ONE TO ONE CHAT , ONLINE , OFLINE AND LASTONLINE TIME
+    socket.on('offer',(userId,roomID)=>{
+    })
+    socket.on('join room', (roomID)=>{
+        console.log("joinedRoom",roomID);
+        console.log(rooms[roomID]);
+        if(rooms[roomID]){
+            // console.log('enter')
+            rooms[roomID].push(socket.id);
+            // console.log('rooms',rooms);
+        }else{
+            rooms[roomID]=[socket.id];
+        }
+        const otherUser= rooms[roomID].find((id)=> id!==socket.id);
+        // console.log("otherUser",otherUser);
+        if(otherUser){
+            socket.emit('other user',otherUser);
+            socket.to(otherUser).emit('user joined',socket.id);
+        }   
+    });
 
+    socket.on('offer',(payload)=>{
+        // console.log("offer",payload);
+        io.to(payload.target).emit('offer',payload);
+    });
+    socket.on('answer',(payload)=>{
+        // console.log('answer',payload)
+        io.to(payload.target).emit('answer',payload);
+    });
+    socket.on('ice-candidate',(incoming)=>{
+        // console.log('ice',incoming.candidate)
+        // console.log('candidate',incoming)
+        io.to(incoming.target).emit('ice-candidate',incoming.candidate);
+    });
+        socket.on('disconnected-user',(s)=>{
+        // console.log('ss',s);
+        var ss=rooms[s];
+        // console.log(ss);
+        var roomArray=[];
+        for(var i=0;i<ss.length;i++){
+            if(ss[i]==socket.id){
+
+            }else{
+                roomArray.push(ss[i]);
+            }
+        }
+        rooms[s]=roomArray;
+    })
         socket.on('chatMessage', async function(payload) {
+            console.log("sss",socket.id)
             const userId = payload.senderId
             // const token = payload.token
             var data = await Users.findOne({
@@ -263,6 +310,8 @@ exports.register = (server, options, next) => {
         });
             //CREATE NEW MESSAGE 
         socket.on('create_message', async (payload) => {
+            console.log("sss",socket.id)
+            
             // console.log(payload);
             const userId = payload.userId
             // console.log(socket.id);
@@ -400,6 +449,7 @@ exports.register = (server, options, next) => {
                 //     console.log("success");
                 // })
             }
+    
         });
     });
     getSingleChat(server,options);
