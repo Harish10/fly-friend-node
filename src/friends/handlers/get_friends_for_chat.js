@@ -14,6 +14,51 @@ const handler = async (request, reply) => {
   const payload = request.payload
   try {
       const id = await Helpers.extractUserId(request)
+      console.log('sssss',id);
+      const totalCount=await Friend.aggregate([
+      {
+        $match:{requester:mongoose.Types.ObjectId(id),status:3}
+      },
+      {
+          $lookup: {
+            from: Chat.collection.name,
+            let: { recipient: "$recipient" },
+            pipeline: [
+              {
+                $match: {
+                  $or: [
+                    {
+                      $and: [
+                        { $expr: { $eq: ["$senderId", "$$recipient"] } },
+                        { $expr: { $eq: ["$receiverId", mongoose.Types.ObjectId(id) ] } },
+                        { $expr: { $eq: ["$isRead",true ] } },
+                      ],
+                    },
+                    {
+                      $and: [
+                        { $expr: { $eq: ["$senderId", mongoose.Types.ObjectId(id) ] } },
+                        { $expr: { $eq: ["$receiverId", "$$recipient"] } },
+                        { $expr: { $eq: ["$isRead",true ] } },
+                      ],
+                    },
+                  ],
+                },
+              },
+              { $sort: { createdAt: -1 } }
+            ],
+            as: "TotalCount",
+          },
+        }
+        // { $unwind: "$TotalCount" },
+        // { $addFields: { "TotalCount.messageCount": { $arrayElemAt:["$lastMessage.message", 0] }}},
+        ])
+      var totalCountArray=[];
+      for(var i=0;i<totalCount.length;i++){
+        var totalCount1=totalCount[i].TotalCount;
+        totalCountArray.push(totalCount1.length);
+      }
+      // console.log(totalCountArray);
+      // console.log('total',totalCount.TotalCount);
       const user = await Friend.aggregate([
        { $match: { requester: mongoose.Types.ObjectId(id), status: 3 } },
         {
@@ -67,13 +112,26 @@ const handler = async (request, reply) => {
         { $unwind: "$users" },
         { $addFields: { "users.lastMessage": { $arrayElemAt:["$lastMessage.message", 0] }}},
         { $addFields: { "users.lastMessageDate": { $arrayElemAt:["$lastMessage.createdAt", 0] }}},
+        // {
+        //   $unwind:"$TotalCount"
+        // },
+        // { $addFields: { "users.messageCount":{$count:"$TotalCount.isRead" }}},
         {
           $replaceRoot: {
             newRoot: "$users",
           },
         },
       ]);
-    
+      for(var j=0;j<user.length;j++){
+        if(totalCountArray.length>0){
+        for(var k =j;k<=j;k++){
+          user[j].messageCount=totalCountArray[k];
+        }          
+        }else{
+          user[j].messageCount=0;
+        }
+      }
+      console.log(user);
     return reply({
       status: true,
       message: 'Get chat friends...',

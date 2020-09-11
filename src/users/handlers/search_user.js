@@ -9,7 +9,11 @@ let defaults = {}
  **/
 const handler = async (request, reply) => {
   const payload = request.payload
-  // console.log(payload.search);
+// <<<<<<< HEAD
+//   // console.log(payload.search);
+// =======
+//   console.log(payload.search);
+// >>>>>>> 56abc03a1855fa1d9961e82ca51d098d507929ea
   try {
     // const user = await Users.findOne({
     //   _id: Object(payload) 
@@ -19,7 +23,7 @@ const handler = async (request, reply) => {
         "$expr": {
           "$regexMatch": {
             "input": { "$concat": ["$firstName", " ", "$lastName"] },
-            "regex": payload,  //Your text search here
+            "regex": payload.search,  //Your text search here
             "options": "i"
           }
         }
@@ -47,11 +51,19 @@ const routeConfig = {
     tags: ['api', 'sarch'],
     description: 'Returns a search object',
     notes: [],
+// <<<<<<< HEAD
     // validate:{
     //   payload:{
     //     search:Joi.string().optional()
     //   }
     // },
+// =======
+//     validate:{
+//       payload:{
+//         search:Joi.string().optional()
+//       }
+//     },
+// >>>>>>> 56abc03a1855fa1d9961e82ca51d098d507929ea
     handler
   }
 }

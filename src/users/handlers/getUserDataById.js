@@ -1,5 +1,5 @@
 import Hoek from 'hoek'
-
+import Joi from 'joi'
 import Helpers from '../../helpers'
 import Users from '../../models/users'
 
@@ -9,11 +9,14 @@ let defaults = {}
  **/
 const handler = async (request, reply) => {
   try {
-    const id = await Helpers.extractUserId(request)
-    console.log(id)
+    // const id = await Helpers.extractUserId(request)
+    const id=request.payload.userId;
+    // console.log("id",id)
+
     const user = await Users.findOne({
       _id: id
     }).lean()
+    // console.log(user)
     return reply({
       status: true,
       message: 'user fetched successfully',
@@ -29,13 +32,18 @@ const handler = async (request, reply) => {
 }
 
 const routeConfig = {
-  method: 'GET',
-  path: '/me',
+  method: 'POST',
+  path: '/getUserDataById',
   config: {
-    auth: 'jwt',
+    // auth: 'jwt',
     tags: ['api', 'me'],
     description: 'Returns a user object based on JWT along with a new token.',
     notes: [],
+    validate:{
+      payload:{
+        userId:Joi.string().optional()
+      }
+    },
     handler
   }
 }

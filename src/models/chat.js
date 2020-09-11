@@ -29,6 +29,14 @@ const ChatSchema=new Schema({
 		type:Schema.Types.ObjectId,
 		ref:'Users'	
 	},
+	isRead:{
+		type:Boolean,
+		default:false
+	},
+	messageCount:{
+		type:Number,
+		default:0
+	},
 	// createdAt:{
 	// 	type:Date,
 	// 	default:Date.now()

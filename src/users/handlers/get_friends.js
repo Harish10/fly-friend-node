@@ -13,7 +13,7 @@ const handler = async (request, reply) => {
   const payload = request.payload
   try {
       const id = await Helpers.extractUserId(request)
-
+      console.log("requester",requester);
       const user = await Friend.aggregate([
                         { $match: { requester: mongoose.Types.ObjectId(payload.requester) }},
                             { "$lookup": {

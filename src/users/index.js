@@ -18,6 +18,7 @@ import getFriends from './handlers/get_friends'
 import uploadFile from './handlers/upload_image'
 import changeProfile from './handlers/change_profile_picture'
 import contactUsInformation from './handlers/contact_us_user'
+import getUserDataById from './handlers/getUserDataById'
 // import deleteUser from './handlers/delete_user'
 // import updateUserByAdmin from './handlers/put_user_by_admin'
 // import updatePropertyManager from './handlers/put_property_manager'
@@ -42,6 +43,7 @@ exports.register = (server, options, next) => {
     uploadFile(server, options)
     changeProfile(server, options)
     contactUsInformation(server, options)
+    getUserDataById(server,options)
     // deleteUser(server, options)
     // updateUserByAdmin(server, options)
     // updatePropertyManager(server, options)
