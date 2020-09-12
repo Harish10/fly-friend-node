@@ -19,16 +19,21 @@ const handler = async (request, reply) => {
     //   _id: Object(payload) 
     // }).lean()
 
-    const user = await Users.find({
-        "$expr": {
-          "$regexMatch": {
-            "input": { "$concat": ["$firstName", " ", "$lastName"] },
-            "regex": payload.search,  //Your text search here
-            "options": "i"
-          }
-        }
-      })
-// const user = await Users.find({ "firstName": { "$regex": payload, "$options": "i" } })
+    // const user = await Users.find({
+    //     "$expr": {
+    //       "$regexMatch": {
+    //         "input": { "$concat": ["$firstName", " ", "$lastName"] },
+    //         "regex": payload.search,  //Your text search here
+    //         "options": "i"
+    //       }
+    //     }
+    //   })
+    const user = await Users.find({ 
+      "$or": [  
+        {"firstName": { "$regex": payload.search, "$options": "i" } },
+        {"lastName": { "$regex": payload.search, "$options": "i" } } 
+      ]
+    })
     return reply({
       status: true,
       message: 'user search successfully',
