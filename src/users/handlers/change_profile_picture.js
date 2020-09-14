@@ -13,13 +13,25 @@ const handler = async (request, reply) => {
 const userId = await Helpers.extractUserId(request)
 let payload = request.payload
 try {
-    const user = await Users.findOneAndUpdate({
+  let user = []
+    if(payload.data.type === 'profileImage'){
+      user = await Users.findOneAndUpdate({
         _id: userId
       }, {
         $set: { 'profileImage': payload.data.image, 'userImage': payload.data.image }
       }, {
         new: true
       })
+    }else if(payload.data.type === 'coverImage'){
+      user = await Users.findOneAndUpdate({
+        _id: userId
+      }, {
+        $set: { 'coverImage': payload.data.image }
+      }, {
+        new: true
+      })
+    }
+   
       return reply({
         status: true,
         message: 'User profile picture updated successfully.',
