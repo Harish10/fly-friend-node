@@ -98,7 +98,8 @@ const handler = async (request, reply) => {
         },
         { $unwind: "$users" },
         { $addFields: { "users.lastMessage": { $arrayElemAt:["$lastMessage.message", 0] }}},
-        { $addFields: { "users.lastMessageDate": { $arrayElemAt:["$lastMessage.createdAt", 0] }}},
+        // { $addFields: { "users.lastMessageDate": { $arrayElemAt:["$lastMessage.createdAt", 0] }}},
+        { $addFields: { "users.lastMessageDate": {$ifNull:[{ $arrayElemAt:["$lastMessage.createdAt", 0] },'']}}},
         { $addFields: { "users.messageType": { $arrayElemAt:["$lastMessage.type", 0] }}},
         {
           $replaceRoot: {
