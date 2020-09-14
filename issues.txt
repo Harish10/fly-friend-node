@@ -1,0 +1,9 @@
+Issues ->
+Image upload on profile not working
+BarberList By CategoryId
+It is not showing any error if I put wrong old password in changepassword screen
+It is taking time to reflect changes over here when I edit profile
+
+addFunctionality=>
+When I accepted offer as customer then it should create an appointment of that date with amount
+And it should show in my bookings.

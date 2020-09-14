@@ -14,7 +14,7 @@ const handler = async (request, reply) => {
   const payload = request.payload
   try {
       const id = await Helpers.extractUserId(request)
-      console.log('sssss',id);
+      // console.log('sssss',id);
       const totalCount=await Friend.aggregate([
       {
         $match:{requester:mongoose.Types.ObjectId(id),status:3}
@@ -26,25 +26,37 @@ const handler = async (request, reply) => {
             pipeline: [
               {
                 $match: {
-                  $or: [
-                    {
-                      $and: [
+                      // $and: [
+                      //   { $expr: { $eq: ["$senderId", mongoose.Types.ObjectId(id) ] } },
+                      //   { $expr: { $eq: ["$receiverId", "$$recipient"] } },
+                      //   { $expr: { $eq: ["$isRead",true ] } },
+                      // ],
+                //   },
+                       $and: [
                         { $expr: { $eq: ["$senderId", "$$recipient"] } },
                         { $expr: { $eq: ["$receiverId", mongoose.Types.ObjectId(id) ] } },
-                        { $expr: { $eq: ["$isRead",true ] } },
+                        { $expr: { $eq: ["$isRead",true ] } }
                       ],
-                    },
-                    {
-                      $and: [
-                        { $expr: { $eq: ["$senderId", mongoose.Types.ObjectId(id) ] } },
-                        { $expr: { $eq: ["$receiverId", "$$recipient"] } },
-                        { $expr: { $eq: ["$isRead",true ] } },
-                      ],
-                    },
-                  ],
-                },
-              },
+                // $or: [
+                //     {
+                //       $and: [
+                //         { $expr: { $eq: ["$senderId", "$$recipient"] } },
+                //         { $expr: { $eq: ["$receiverId", mongoose.Types.ObjectId(id) ] } },
+                //         { $expr: { $eq: ["$isRead",true ] } }
+                //       ],
+                //     },
+                //     {
+                //       $and: [
+                //         { $expr: { $eq: ["$senderId", mongoose.Types.ObjectId(id) ] } },
+                //         { $expr: { $eq: ["$receiverId", "$$recipient"] } },
+                //         { $expr: { $eq: ["$isRead",true ] } }
+                //       ],
+                //     },
+                //   ]
+             } 
+           },
               { $sort: { createdAt: -1 } }
+            
             ],
             as: "TotalCount",
           },
@@ -52,6 +64,8 @@ const handler = async (request, reply) => {
         // { $unwind: "$TotalCount" },
         // { $addFields: { "TotalCount.messageCount": { $arrayElemAt:["$lastMessage.message", 0] }}},
         ])
+      // console.log('total',totalCount.length);
+      // console.log(totalCount)
       var totalCountArray=[];
       for(var i=0;i<totalCount.length;i++){
         var totalCount1=totalCount[i].TotalCount;
@@ -131,7 +145,7 @@ const handler = async (request, reply) => {
           user[j].messageCount=0;
         }
       }
-      console.log(user);
+      // console.log(user);
     return reply({
       status: true,
       message: 'Get chat friends...',

@@ -1,6 +1,4 @@
-import Mongoose from 'mongoose';
-import validator from 'validator';
-
+const Mongoose = require('mongoose');
 const Schema = Mongoose.Schema;
 
 const friendsSchema = new Schema({

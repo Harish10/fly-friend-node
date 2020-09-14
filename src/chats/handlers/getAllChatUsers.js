@@ -15,6 +15,35 @@ const handler = async (request, reply) => {
   const payload = request.payload
   try {
       const id = await Helpers.extractUserId(request)
+      const totalCount=await Users.aggregate([
+      {
+          $lookup: {
+            from: Chat.collection.name,
+            let: { recipient: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                       $and: [
+                        { $expr: { $eq: ["$senderId", "$$recipient"] } },
+                        { $expr: { $eq: ["$receiverId",  mongoose.Types.ObjectId(id)] } },
+                        { $expr: { $eq: ["$isRead",true ] } }
+                      ],
+             } 
+           },
+              { $sort: { createdAt: -1 } }
+            
+            ],
+            as: "TotalCount",
+          },
+        }
+        ])
+      // console.log(totalCount);
+      var totalCountArray=[];
+      for(var i=0;i<totalCount.length;i++){
+        var totalCount1=totalCount[i].TotalCount;
+        totalCountArray.push(totalCount1.length);
+      }
+      // console.log(totalCountArray)
       const user = await Users.aggregate([
         {
           $lookup: {
@@ -77,7 +106,18 @@ const handler = async (request, reply) => {
           },
         },
       ]);
-    
+      // console.log(user);
+      for(var j=0;j<user.length;j++){
+        if(totalCountArray.length>0){
+        for(var k =j;k<=j;k++){
+          console.log(user[j].firstName);
+          console.log(totalCount[j].firstName);
+          user[j].messageCount=totalCountArray[k];
+        }          
+        }else{
+          user[j].messageCount=0;
+        }
+      }
     //when last message date key availabel so push first one
     let orderList = []
     user && user.map((data, i)=>{
@@ -93,7 +133,16 @@ const handler = async (request, reply) => {
         orderList.push(data)
       }
     })
-
+    // for(var j=0;j<orderList.length;j++){
+    //     if(totalCountArray.length>0){
+    //     for(var k =j;k<=j;k++){
+    //       orderList[j].messageCount=totalCountArray[k];
+    //     }          
+    //     }else{
+    //       user[j].messageCount=0;
+    //     }
+    //   }
+      // console.log(orderList);
     return reply({
       status: true,
       message: 'Get chat friends...',
