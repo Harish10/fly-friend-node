@@ -1,4 +1,5 @@
 import Channels from '../../models/channels';
+import Messages from '../../models/messages';
 import Users from '../../models/users';
 import Joi from 'joi';
 import Hoek from 'hoek';
@@ -84,7 +85,52 @@ const handler = async (request, reply) => {
             }
         ]
         const channelData = await Channels.aggregate(query);
-        // console.log(channelData);
+        
+        // var messageCountArray=[];
+        for(var m=0;m<channelData.length;m++){
+            // console.log('emmmm')
+            var messageData=await Messages.find({channelId:channelData[m]._id},{messageRead:1});
+            var membersArray=[];
+            for(var w=0;w<channelData[m].members.length;w++){
+                var mm={
+                    userId:channelData[m].members[w],
+                    messcount:0
+                }
+                membersArray.push(mm);
+            }
+            // console.log(membersArray)
+            for(var v=0;v<messageData.length;v++){
+                var ss=messageData[v].messageRead;
+                for(var s=0;s<ss.length;s++){
+                    for(var z=0;z<membersArray.length;z++){
+                        // console.log(typeof(membersArray[z].userId),"www")
+                        // console.log(typeof(ss[s].userId),"www22")
+                        if(membersArray[z].userId.toString()===ss[s].userId.toString()){
+                            // console.log('enter',ss[s])
+                            if(ss[s].isRead){
+                                // console.log(ss[s].userId)
+                                membersArray[z].messcount++;
+                            }
+                        }else{
+
+                        }
+                    }                    
+                }
+            }
+            // var channelObject={
+            //     channelId:channelData[m]._id,
+            //     members:membersArray
+            // }
+            // console.log(channelObject);
+            // messageCountArray.push(channelObject)
+            channelData[m].messageCount=membersArray
+            // var messageCount={
+            //     channelId:channelData[m]._id,
+            //     members:messageData[k].messageRead
+            // }
+        //     console.log("fffffffffff=?????????????",messageData.messageRead);
+        }
+        // console.log(channelData)
         return reply({
             status: true,
             message: "Get my channels.",

@@ -29,6 +29,7 @@ var MessageSchema=new Schema({
     //     type: Date,
     //     default: Date.now
     // },
+    messageRead:[],
     updatedAt: {
         type: Date,
         default: Date.now

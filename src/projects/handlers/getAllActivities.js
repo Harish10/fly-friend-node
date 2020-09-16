@@ -51,9 +51,9 @@ const handler = async (request, reply) => {
                         projectCount: {
                             $sum: 1
                         },
-                        // project: {
-                        //   $push: "$$ROOT"
-                        // },
+                        project: {
+                          $push: "$$ROOT"
+                        },
                     }
                 },
                 // {
@@ -88,6 +88,7 @@ const handler = async (request, reply) => {
             var recentData = await Activity.find({}).sort({
                 createdAt: -1
             }).limit(3);
+            // console.log("ssssss=>>>>>>>>>>>",activityData);
             if (activityData.length > 0) {
                 return reply({
                     status: true,

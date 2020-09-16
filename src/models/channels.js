@@ -26,6 +26,7 @@ var ChannelSchema=new Schema({
 		default: '' 
 	},
 	messages:[],
+	messageCount:[],
 	createdAt: {
         type: Date,
         default: Date.now
