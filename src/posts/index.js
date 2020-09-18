@@ -12,6 +12,7 @@ import editPost from './handlers/edit_post';
 import deletePost from './handlers/delete_post';
 import disLike from './handlers/disLikePost';
 import createPostLink from './handlers/create_post_link'
+import getPostDetailsById from './handlers/getPostDetailsById'
 
 exports.register = (server, option, next) => {
   createPost(server, option);
@@ -28,6 +29,7 @@ exports.register = (server, option, next) => {
   removePostComment(server,option)
   disLike(server,option)
   createPostLink(server,option)
+  getPostDetailsById(server,option)
   next();
 };
 
