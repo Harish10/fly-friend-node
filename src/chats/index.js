@@ -16,6 +16,7 @@ import Messages from '../models/messages';
 import Channels from '../models/channels';
 import _ from 'lodash';
 import UpdateMessageCount from './handlers/UpdateMessageCount';
+import UpdateGroupMessageCount from './handlers/UpdateGroupMessageCount'
 const {Howl,Howler}=require("howler");
 exports.register = (server, options, next) => {
     //connection with socket.
@@ -463,6 +464,7 @@ exports.register = (server, options, next) => {
     getAllChatUsers(server, options);
     editSingleChat(server, options);
     UpdateMessageCount(server,options);
+    UpdateGroupMessageCount(server,options);
     next();
 }
 
