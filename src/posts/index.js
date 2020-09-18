@@ -11,6 +11,7 @@ import editPostComment from './handlers/editPostComment';
 import editPost from './handlers/edit_post';
 import deletePost from './handlers/delete_post';
 import disLike from './handlers/disLikePost';
+import createPostLink from './handlers/create_post_link'
 
 exports.register = (server, option, next) => {
   createPost(server, option);
@@ -26,6 +27,7 @@ exports.register = (server, option, next) => {
   editPostComment(server,option)
   removePostComment(server,option)
   disLike(server,option)
+  createPostLink(server,option)
   next();
 };
 
