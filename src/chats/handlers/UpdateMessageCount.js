@@ -29,7 +29,7 @@ const handler = async (request, reply) => {
                       ],
                     },
                   ]},{$set:{isRead:false}});
-      console.log('update',update)
+      // console.log('update',update)
       return reply({
         status:true,
         message:"Update message count."

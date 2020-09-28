@@ -12,7 +12,7 @@ let defaults = {}
 const handler = async (request, reply) => {
   try {
     let payload = request.payload;
-		console.log(payload)
+		// console.log(payload)
 		const email = _.get(payload, 'username',"");
 		const password = _.get(payload, 'password',"");
 		const user = await Users.findOne({

@@ -29,7 +29,7 @@ const handler = async (request, reply) => {
     }
     const Id = payload._id
     let createLinkData = CreateLink("LINkkk", Id, sPart, sObject, "Ashish Heee Namee")
-    console.log('linnnnnnkkkkkkkk=========>>>>> ', createLinkData)
+    // console.log('linnnnnnkkkkkkkk=========>>>>> ', createLinkData)
   } catch (error) {
     return reply({
       status: false,

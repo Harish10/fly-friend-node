@@ -14,7 +14,7 @@ let defaults = {}
 const handler = async (request, reply) => {
   try {
       const userId = await Helpers.extractUserId(request)
-      console.log(userId);
+      // console.log(userId);
       const user = await Users.findOne({
       _id: userId
       });

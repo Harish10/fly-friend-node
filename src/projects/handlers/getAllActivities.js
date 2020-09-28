@@ -24,7 +24,7 @@ const handler = async (request, reply) => {
             _id: userId
         });
         if (user) {
-            console.log(userId)
+            // console.log(userId)
             var payload = request.query.search;
             var page = parseInt(request.query.page) || 1;
             var page_size = parseInt(request.query.page_size) || 10;
