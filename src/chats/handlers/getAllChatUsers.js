@@ -111,8 +111,8 @@ const handler = async (request, reply) => {
       for(var j=0;j<user.length;j++){
         if(totalCountArray.length>0){
         for(var k =j;k<=j;k++){
-          console.log(user[j].firstName);
-          console.log(totalCount[j].firstName);
+          // console.log(user[j].firstName);
+          // console.log(totalCount[j].firstName);
           user[j].messageCount=totalCountArray[k];
         }          
         }else{

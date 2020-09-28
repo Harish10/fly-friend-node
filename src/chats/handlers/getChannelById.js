@@ -12,7 +12,7 @@ var defaults = {};
 	
 const handler=async (request,reply)=>{
 	try{
-        console.log(request.payload);
+        // console.log(request.payload);
 		let payload = request.payload;
         const userId = _.get(request, 'payload.userId', '');
         const token = _.get(request, 'payload.token', '');

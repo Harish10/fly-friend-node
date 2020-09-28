@@ -20,7 +20,7 @@ const handler = async (request, reply) => {
             _id: userId
         })
         if (data) {
-            console.log(payload.postId);
+            // console.log(payload.postId);
         var commentData=await Comments.find({postId:payload.postId}).populate('userId').sort({createdAt:-1});
         if(commentData.length>0){
             return reply({

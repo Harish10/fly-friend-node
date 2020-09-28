@@ -10,7 +10,7 @@ let defaults = {}
 const handler = async (request, reply) => {
   try {
     const id = await Helpers.extractUserId(request)
-    console.log(id)
+    // console.log(id)
     const user = await Users.findOne({
       _id: id
     }).lean()
