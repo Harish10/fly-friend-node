@@ -64,9 +64,9 @@ const manifest = {
     {
       plugin:"./posts"      
     },
-    // {
-    //   plugin:"./chats"
-    // },
+    {
+      plugin:"./chats"
+    },
     {
       plugin:"./followers"
     },

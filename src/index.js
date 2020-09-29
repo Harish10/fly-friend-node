@@ -37,7 +37,7 @@ composer((err, server) => {
       options: {}
     }
     // server.connection({ port: 4001, labels: ['chat'] });
-    server.register([register, require('./chats')])
+    server.register([register])
     server.start(() => {
       // 'http://0.0.0.0:3001'
       // const env = process.env.NODE_ENV
