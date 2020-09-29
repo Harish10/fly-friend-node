@@ -19,17 +19,19 @@ import _ from 'lodash';
 import UpdateMessageCount from './handlers/UpdateMessageCount';
 import UpdateGroupMessageCount from './handlers/UpdateGroupMessageCount'
 const {Howl,Howler}=require("howler");
+var Hapi = require('hapi');
+var server2 = new Hapi.Server();
+
 exports.register = (server, options, next) => {
     //connection with socket.
-    var io = server.plugins['hapi-io'].io;
-
-    // var io = require('socket.io')(server.listener);
+    // var io = server.plugins['hapi-io'].io;
     // var socket;
     // var connection = [];
     // const rooms={};
+    var io = require('socket.io')(server.listener);
 
 
-    var socket;
+    // var socket;
     var connection = [];
     const rooms={};
     io.on('connection', function(socket) {

@@ -14,9 +14,9 @@ const manifest = {
   registrations: [{
       plugin: "hapi-auth-jwt2"
     },
-    {
-      plugin: 'hapi-io'
-    },
+    // {
+    //   plugin: 'hapi-io'
+    // },
     {
       plugin: "inert"
     },
@@ -53,20 +53,20 @@ const manifest = {
         options: AppConfig.get("/ratelimit")
       }
     },
-    {
-      plugin: {
-        register: './socket'
-      }
-    },
+    // {
+    //   plugin: {
+    //     register: './socket'
+    //   }
+    // },
     {
       plugin: "./users"
     },
     {
       plugin:"./posts"      
     },
-    {
-      plugin:"./chats"
-    },
+    // {
+    //   plugin:"./chats"
+    // },
     {
       plugin:"./followers"
     },
