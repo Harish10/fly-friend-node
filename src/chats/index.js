@@ -21,7 +21,9 @@ import UpdateGroupMessageCount from './handlers/UpdateGroupMessageCount'
 const {Howl,Howler}=require("howler");
 exports.register = (server, options, next) => {
     //connection with socket.
-    var io = require('socket.io')(server.listener);
+    var io = server.plugins['hapi-io'].io;
+
+    // var io = require('socket.io')(server.listener);
     // var socket;
     // var connection = [];
     // const rooms={};

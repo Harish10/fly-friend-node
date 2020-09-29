@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-
+// var hapiio = require('hapi-io');
 /**
  * Module imports
  *

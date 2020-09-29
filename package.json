@@ -40,6 +40,7 @@
     "hapi": "^18.0.0",
     "hapi-auth-jwt2": "7.2.4",
     "hapi-cron": "^1.0.5",
+    "hapi-io": "^0.2.1",
     "hapi-swagger": "7.7.0",
     "hoek": "^6.1.2",
     "howler": "^2.2.0",
