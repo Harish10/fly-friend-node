@@ -14,9 +14,9 @@ const manifest = {
   registrations: [{
       plugin: "hapi-auth-jwt2"
     },
-    // {
-    //   plugin: 'hapi-io'
-    // },
+    {
+      plugin: 'hapi-io'
+    },
     {
       plugin: "inert"
     },
