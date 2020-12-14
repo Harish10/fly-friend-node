@@ -14,6 +14,7 @@ const mongoose = require('mongoose');
 import Chats from '../models/chat';
 import Users from '../models/users';
 import Messages from '../models/messages';
+import Friend from '../models/friends'
 import Channels from '../models/channels';
 import _ from 'lodash';
 import UpdateMessageCount from './handlers/UpdateMessageCount';
